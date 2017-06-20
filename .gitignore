@@ -1,0 +1,8 @@
+.env
+LocalProcfile
+collected_static
+media
+debug.ini
+settings_local.py
+urls_local.py
+*.dump
