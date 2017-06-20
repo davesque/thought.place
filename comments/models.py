@@ -1,3 +1,85 @@
+from django.core.cache import cache
 from django.db import models
+from lxml.html.clean import clean_html
+from pypandoc import convert
 
-# Create your models here.
+from thoughtplace.cache import get_or_cache, ONE_YEAR_TIMEOUT, delete_cached_fragment
+
+
+def cache_method(get_key, timeout):
+    def decorator(old_method):
+        def new_method(self, *args, **kwargs):
+            return get_or_cache(
+                get_key(self),
+                lambda: old_method(self, *args, **kwargs),
+                timeout,
+            )
+        return new_method
+    return decorator
+
+
+class Comment(models.Model):
+    url = models.CharField(db_index=True, max_length=255)
+    ip = models.CharField(max_length=255)
+
+    name = models.CharField(help_text='Optional.  Leave blank for anonymous comments.', max_length=255, blank=True, null=True)
+    website = models.URLField(help_text='Optional.', max_length=255, blank=True, null=True)
+
+    comment = models.TextField(
+        help_text='''
+In markdown format.  To reply to a comment, refer to it by name and/or number.
+e.g.  "Fred #4", "David #1", "comment #11", etc.
+'''[1:-1],
+    )
+
+    moderator = models.BooleanField(default=False, editable=False)
+    flagged = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('created_at',)
+
+    def __unicode__(self):
+        return '#{0} on {1} by {2}'.format(
+            self.id,
+            self.url,
+            self.name,
+        )
+
+    def save(self, *args, **kwargs):
+        self.delete_related_cache()
+
+        super(Comment, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.delete_related_cache()
+
+        super(Comment, self).delete(*args, **kwargs)
+
+    def delete_related_cache(self):
+        # Delete converted markdown cache
+        cache.delete(self.get_html_content_key())
+
+        # Delete cached sections for related post or thought
+        delete_cached_fragment('obj', self.url, 'comments')
+
+    def get_html_content_key(self):
+        return 'comment_{0}_html_content'.format(self.id)
+
+    @cache_method(
+        get_html_content_key,
+        ONE_YEAR_TIMEOUT,
+    )
+    def html_content(self):
+        return clean_html(convert(self.comment.strip(), 'html', format='markdown'))
+
+    @property
+    def display_name(self):
+        return 'David Sanders' if self.moderator else (self.name or 'Anonymous')
+
+    @property
+    def display_website(self):
+        return None if self.moderator else self.website
