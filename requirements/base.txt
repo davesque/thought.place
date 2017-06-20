@@ -12,3 +12,4 @@ pyScss
 lxml
 pypandoc
 PyYAML
+python-dateutil
