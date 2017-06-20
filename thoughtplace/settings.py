@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'development_secret_key')
 DEBUG = bool(os.getenv('DEBUG'))
 TESTING = 'test' in sys.argv
 
-ALLOWED_HOSTS = [os.getenv('HOSTNAME', '*')]
+ALLOWED_HOSTS = [i.strip() for i in os.getenv('ALLOWED_HOSTS', '*').split(',')]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
