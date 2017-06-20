@@ -5,6 +5,7 @@ dj-database-url
 psycopg2
 raven
 whitenoise
-six
 ipython
 markdown
+django-compressor
+pyScss
