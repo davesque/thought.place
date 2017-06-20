@@ -42,17 +42,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'compressor',
+
+    'posts',
+    'comments',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CACHE_MIDDLEWARE_SECONDS = (
+    60 *  # seconds
+    60 *  # minutes
+    24 *  # hours
+    365   # days
+)
 
 ROOT_URLCONF = 'thoughtplace.urls'
 
@@ -123,8 +137,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+)
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'python -mscss -I\'%s\' < {infile} > {outfile}' % os.path.join(BASE_DIR, 'collected_static')),
 )
 
 # Logging and error reporting
