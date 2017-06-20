@@ -1,14 +1,18 @@
 {% load staticfiles %}
 {% load compress %}
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>thought.place - {% block title %}{% endblock %}</title>
+  <title>thought.place</title>
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="description" content="thought.place | a blog by David Sanders">
   <meta name="keywords" content="Web Development, Software Engineering, Computer Science, Python, Haskell, Boulder, Denver, Colorado">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {#{% compress css %}#}
+  {#<link rel="stylesheet" type="text/x-scss" href="{% static 'site.scss' %}" />#}
+  {#{% endcompress %}#}
 
   <!-- UIkit CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/css/uikit.min.css" />
@@ -19,51 +23,51 @@
   <!-- UIkit JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit-icons.min.js"></script>
-
-  {% compress css %}
-  <link rel="stylesheet" type="text/x-scss" href="{% static 'site.scss' %}" />
-  {% endcompress %}
-
-  {% compress js %}
-  <script type="text/javascript" src="{% static 'charlesdavidsanders.js' %}"></script>
-  {% endcompress %}
 </head>
 
 <body>
-  <div class="main-container">
-    <header>
-      <div class="page-header">
-        <div class="left">{% block header-left %}{% endblock %}</div>
-        <div class="center"><a href="/">thought.place</a></div>
-        <div class="right">{% block header-right %}{% endblock %}</div>
+	<nav class="uk-navbar-container uk-padding uk-padding-remove-vertical uk-box-shadow-medium uk-box-shadow-hover-large" uk-navbar>
+		<div class="uk-navbar-left">
+      <a href="/" class="uk-navbar-item uk-logo">thought.place</a>
+		</div>
+
+		<div class="uk-navbar-right">
+      {% url 'about' as about_url %}
+      {% url 'post_list' as post_list_url %}
+      {% url 'projects' as projects_url %}
+
+			<ul class="uk-navbar-nav">
+        <li class="uk-visible@s {% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">about</a></li>
+        <li class="uk-visible@s {% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">articles</a></li>
+        <li class="uk-visible@s {% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">projects</a></li>
+
+        <a href="#mobile-nav" class="uk-navbar-toggle uk-hidden@s" uk-navbar-toggle-icon uk-toggle></a>
+			</ul>
+
+      <div id="mobile-nav" uk-modal="center: true">
+        <div class="uk-modal-dialog uk-modal-body">
+          <button class="uk-modal-close-default" type="button" uk-close></button>
+          <ul class="uk-nav uk-nav-primary uk-nav-center">
+            <li class="{% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">About</a></li>
+            <li class="{% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">Articles</a></li>
+            <li class="{% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">Projects</a></li>
+          </ul>
+        </div>
       </div>
+		</div>
+	</nav>
 
-      <div class="section-title">name</div>
-      <section><h1>{% block h1 %}{% endblock %}</h1></section>
-
-      <div class="section-title">see also</div>
-      <section>
-        <nav>
-          <ol>
-            <li class="{% block about-class %}{% endblock %}"><a href="{% url 'about' %}">about</a>,</li>
-            <li class="{% block articles-class %}{% endblock %}"><a href="{% url 'post_list' %}">articles</a>,</li>
-            <li class="{% block projects-class %}{% endblock %}"><a href="{% url 'projects' %}">projects</a></li>
-          </ol>
-        </nav>
-      </section>
-    </header>
-
-    <div class="section-title">description</div>
+  <div class="uk-container uk-padding">
     {% block content %}
-    <article>
+    <article class="uk-article">
       {% block article-content %}{% endblock %}
     </article>
     {% endblock %}
 
-    <footer>
-      <div class="left">&copy; 2011-2017 David Sanders</div>
-      <div class="center"><a href="/">thought.place</a></div>
-      <div class="right">{% block footer-right %}{% endblock %}</div>
-    </footer>
+    {#<footer>#}
+    {#  <div class="left">&copy; 2011-2017 David Sanders</div>#}
+    {#  <div class="center"><a href="/">thought.place</a></div>#}
+    {#  <div class="right">{% block footer-right %}{% endblock %}</div>#}
+    {#</footer>#}
   </div>
 </body>

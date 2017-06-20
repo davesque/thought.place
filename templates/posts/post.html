@@ -1,40 +1,27 @@
 {% extends 'base.html' %}
 {% load cache %}
 
-{% block header-left %}
-{% block header-right %}
-{% block footer-right %}
-articles
-{% endblock %}
-{% endblock %}
-{% endblock %}
-
-{% block h1 %}{% block title %}{{ obj.title }} - {{ obj.published|date:'Y.n.j' }}{% endblock %}{% endblock %}
-{% block articles-class %}here{% endblock %}
-
 {% block content %}
 {% cache ONE_YEAR_TIMEOUT obj view.request.path %}
-<article>
+<article class="uk-article">
   <section>
     {{ obj.body|safe }}
   </section>
 </article>
 {% endcache %}
 
-<div class="section-title">comments</div>
+<div>comments</div>
 <section>
 {% cache ONE_YEAR_TIMEOUT obj view.request.path 'comments' %}
   {% for c in comments %}
-  <section class="comment">
-    <hgroup class="headers">
-      <h2 class="{% if c.moderator %}moderator{% endif %}">
-        {% if c.display_website %}
-        <a href="{{ c.display_website }}">{{ c.display_name }}</a> says:
-        {% else %}
-        {{ c.display_name }} says:
-        {% endif %}
-      <h2>
-    </hgroup>
+  <section>
+    <h2 class="{% if c.moderator %}moderator{% endif %}">
+      {% if c.display_website %}
+      <a href="{{ c.display_website }}">{{ c.display_name }}</a> says:
+      {% else %}
+      {{ c.display_name }} says:
+      {% endif %}
+    <h2>
 
     <p><em>Comment #{{ forloop.counter }} posted on {{ c.created_at|date:'Y.n.j \a\t f a e' }}</em></p>
 
@@ -47,10 +34,8 @@ articles
   {% endfor %}
 {% endcache %}
 
-  <section class="comment-form">
-    <hgroup class="headers">
-      <h2>Leave a comment:<h2>
-    </hgroup>
+  <section>
+    <h2>Leave a comment:<h2>
 
     <div id="token" style="display: none;">{{ csrf_token }}</div>
 
@@ -61,7 +46,7 @@ articles
         {{ form.as_table }}
       </table>
 
-      <div class="submit-row"><input type="submit" value="Submit"></div>
+      <div><input type="submit" value="Submit"></div>
     </form>
 
     <script>

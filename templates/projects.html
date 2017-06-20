@@ -1,60 +1,52 @@
 {% extends 'base.html' %}
 
-{% block header-left %}
-{% block header-right %}
-{% block footer-right %}
-projects
-{% endblock %}
-{% endblock %}
-{% endblock %}
-
-{% block h1 %}{% block title %}projects{% endblock %}{% endblock %}
-{% block projects-class %}here{% endblock %}
-
 {% block article-content %}
 <section>
-  <hgroup>
-    <a href="https://github.com/davesque/nagari"><h2>nagari</h2> <h3>(Haskell)</h3></a>
-  </hgroup>
+  <div uk-grid>
+    <div class="uk-width-expand" uk-leader><a class="uk-text-large uk-link-text" href="https://github.com/davesque/django-rest-framework-simplejwt">simple jwt</a></div>
+    <div class="uk-text-large">python</div>
+  </div>
 
-  A simple parsing library written in Haskell.
+  <p>A JSON Web Token auth plugin for the Django REST Framework.</p>
 </section>
 
 <section>
-  <hgroup>
-    <a href="https://github.com/davesque/s"><h2>s</h2> <h3>(Shell)</h3></a>
-  </hgroup>
+  <div uk-grid>
+    <div class="uk-width-expand" uk-leader><a class="uk-text-large uk-link-text" href="https://github.com/davesque/s">s</a></div>
+    <div class="uk-text-large">shell</div>
+  </div>
 
-  A simple shell script manager.
+  <p>A simple shell script manager.</p>
 </section>
 
 <section>
-  <hgroup>
-    <a href="https://github.com/davesque/go.py"><h2>go.py</h2> <h3>(Python)</h3></a>
-  </hgroup>
+  <div uk-grid>
+    <div class="uk-width-expand" uk-leader><a class="uk-text-large uk-link-text" href="https://github.com/davesque/go.py">go.py</a></div>
+    <div class="uk-text-large">python</div>
+  </div>
 
-  A text-based go game written in python.
+  <p>A text-based go game written in python.</p>
 </section>
 
 <section>
-  <hgroup>
-    <a href="https://github.com/davesque/gitfuse"><h2>gitfuse</h2> <h3>(Python)</h3></a>
-  </hgroup>
+  <div uk-grid>
+    <div class="uk-width-expand" uk-leader><a class="uk-text-large uk-link-text" href="https://github.com/davesque/gitfuse">gitfuse</a></div>
+    <div class="uk-text-large">python</div>
+  </div>
 
-    Easily mount git repositories as read-only file systems using FUSE.
+  <p>Easily mount git repositories as read-only file systems using FUSE.</p>
 </section>
 
 <section>
-  <hgroup>
-    <a href="https://github.com/davesque/thought.place"><h2>thought.place</h2> <h3>(Python)</h3></a>
-  </hgroup>
+  <div uk-grid>
+    <div class="uk-width-expand" uk-leader><a class="uk-text-large uk-link-text" href="https://github.com/davesque/thought.place">thought.place</a></div>
+    <div class="uk-text-large">python</div>
+  </div>
 
-    This website.
+  <p>This website.</p>
 </section>
 
 <section>
-  <hgroup>
-    <a href="https://github.com/davesque"><h2>etc, etc...</h2></a>
-  </hgroup>
+  <a class="uk-text-large uk-link-text" href="https://github.com/davesque">etc, etc&hellip;</a>
 </section>
 {% endblock %}

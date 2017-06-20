@@ -1,23 +1,11 @@
 {% extends 'base.html' %}
 
-{% block header-left %}
-{% block header-right %}
-{% block footer-right %}
-articles
-{% endblock %}
-{% endblock %}
-{% endblock %}
-
-{% block h1 %}{% block title %}articles{% endblock %}{% endblock %}
-{% block articles-class %}here{% endblock %}
-
 {% block article-content %}
 {% for obj in objects %}
 <section>
   <hgroup>
-    <a href="{{ obj.url }}">
-      <h2>{{ obj.title }}</h2> - <h3>{{ obj.published|date:'Y.n.j' }}</h3>
-    </a>
+    <a href="{{ obj.url }}"><h2 class="uk-margin-small-bottom">{{ obj.title }}</h2></a>
+    <h3 class="uk-margin-small-top">{{ obj.published|date:'Y.n.j' }}</h3>
   </hgroup>
 
   <p>{{ obj.body|truncatewords_html:30|striptags }}</p>
