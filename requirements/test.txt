@@ -1,3 +1,2 @@
 factory_boy
-lxml
 cssselect

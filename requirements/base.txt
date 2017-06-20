@@ -9,3 +9,6 @@ ipython
 markdown
 django-compressor
 pyScss
+lxml
+pypandoc
+PyYAML
