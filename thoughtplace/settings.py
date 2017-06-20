@@ -147,7 +147,7 @@ STATICFILES_DIRS = (
 )
 
 COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'python -mscss -I\'%s\' < {infile} > {outfile}' % os.path.join(BASE_DIR, 'collected_static')),
+    ('text/x-scss', 'python -mscss -I\'%s\' < {infile} > {outfile}' % os.path.join(BASE_DIR, 'static')),
 )
 
 # Logging and error reporting

@@ -15,7 +15,7 @@ except ImportError:
 class Post(object):
     DATE_RE = re.compile(r'^.*/(\d{4})/(\d{1,2})/(\d{1,2})/([a-zA-Z0-9\-]+)\.md$')
     OBJECTS_DIR = os.path.join(settings.BASE_DIR, 'posts', 'objects')
-    DETAIL_URL = 'posts_post'
+    DETAIL_URL = 'post_detail'
 
     def __init__(self, path):
         with open(path, 'r') as f:
@@ -27,7 +27,7 @@ class Post(object):
 
         # Parse raw post content
         parts = content.split('---\n')
-        parts = filter(bool, parts)
+        parts = list(filter(bool, parts))
 
         # Load data from frontmatter yaml
         frontmatter = load(parts[0], Loader=Loader)
