@@ -149,6 +149,7 @@ STATICFILES_DIRS = (
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'python -mscss -I\'%s\' < {infile} > {outfile}' % os.path.join(BASE_DIR, 'static')),
 )
+COMPRESS_OFFLINE = not DEBUG
 
 # Logging and error reporting
 LOGGING = {
