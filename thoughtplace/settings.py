@@ -148,7 +148,7 @@ STATICFILES_DIRS = (
 )
 
 COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'python -mscss -I\'%s\' < {infile} > {outfile}' % os.path.join(BASE_DIR, 'static')),
+    ('text/x-scss', 'thoughtplace.filters.LibSassFilter'),
 )
 COMPRESS_OFFLINE = not DEBUG
 

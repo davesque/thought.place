@@ -8,7 +8,7 @@ whitenoise
 ipython
 markdown
 django-compressor
-pyScss
+libsass
 lxml
 pypandoc
 PyYAML
