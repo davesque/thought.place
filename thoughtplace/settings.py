@@ -34,6 +34,7 @@ DEBUG = bool(os.getenv('DEBUG'))
 TESTING = 'test' in sys.argv
 
 ALLOWED_HOSTS = [i.strip() for i in os.getenv('ALLOWED_HOSTS', '*').split(',')]
+CANONICAL_HOST = os.getenv('CANONICAL_HOST', ALLOWED_HOSTS[0])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
