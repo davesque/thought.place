@@ -4,7 +4,7 @@
 {% for obj in objects %}
 <section>
   <hgroup>
-    <a href="{{ obj.url }}"><h2 class="uk-margin-small-bottom">{{ obj.title }}</h2></a>
+    <h2 class="uk-margin-small-bottom"><a class="uk-link-text" href="{{ obj.url }}">{{ obj.title }}</a></h2>
     <h3 class="uk-margin-small-top">{{ obj.published|date:'Y.n.j' }}</h3>
   </hgroup>
 

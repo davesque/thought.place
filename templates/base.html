@@ -28,36 +28,38 @@
 
 <body>
   <div class="uk-offcanvas-content">
-    <nav class="uk-navbar-container uk-margin-medium-top uk-margin-medium-bottom" uk-navbar>
-      <div class="uk-navbar-left">
-        <a href="/" class="uk-navbar-item uk-logo">thought.place</a>
-      </div>
+    <div class="uk-margin-medium-bottom uk-background-primary">
+      <nav class="uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+          <a href="/" class="uk-navbar-item uk-logo">thought.place</a>
+        </div>
 
-      <div class="uk-navbar-right">
-        {% url 'about' as about_url %}
-        {% url 'post_list' as post_list_url %}
-        {% url 'projects' as projects_url %}
+        <div class="uk-navbar-right">
+          {% url 'about' as about_url %}
+          {% url 'post_list' as post_list_url %}
+          {% url 'projects' as projects_url %}
 
-        <ul class="uk-navbar-nav">
-          <li class="uk-visible@s {% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">about</a></li>
-          <li class="uk-visible@s {% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">articles</a></li>
-          <li class="uk-visible@s {% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">projects</a></li>
+          <ul class="uk-navbar-nav">
+            <li class="uk-visible@s {% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">about</a></li>
+            <li class="uk-visible@s {% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">articles</a></li>
+            <li class="uk-visible@s {% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">projects</a></li>
 
-          <a href="#offcanvas-nav-primary" class="uk-navbar-toggle uk-hidden@s" type="button" uk-navbar-toggle-icon uk-toggle></a>
-        </ul>
+            <a href="#offcanvas-nav-primary" class="uk-navbar-toggle uk-hidden@s" type="button" uk-navbar-toggle-icon uk-toggle></a>
+          </ul>
 
-        <div id="mobile-nav" uk-modal="center: true">
-          <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <ul class="uk-nav uk-nav-primary uk-nav-center">
-              <li class="{% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">About</a></li>
-              <li class="{% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">Articles</a></li>
-              <li class="{% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">Projects</a></li>
-            </ul>
+          <div id="mobile-nav" uk-modal="center: true">
+            <div class="uk-modal-dialog uk-modal-body">
+              <button class="uk-modal-close-default" type="button" uk-close></button>
+              <ul class="uk-nav uk-nav-primary uk-nav-center">
+                <li class="{% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">About</a></li>
+                <li class="{% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">Articles</a></li>
+                <li class="{% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">Projects</a></li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
 
     <div class="uk-container uk-container-small">
       {% block content %}

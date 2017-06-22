@@ -5,12 +5,24 @@ $global-font-size: 18px;
 
 $logo-font-family: $base-code-font-family;
 $navbar-nav-item-font-family: $base-code-font-family;
-$logo-font-size: 36px;
-$navbar-nav-item-font-size: 20px;
+$logo-font-size: 30px;
+$navbar-nav-item-font-size: 22px;
 $nav-primary-item-font-size: 30px;
 
-$global-color: #3a3a3a;
+$global-primary-background: #7cf;
 $global-secondary-background: #fff;
+$global-color: #333;
+$global-muted-color: mix($global-color, $global-primary-background, 40%);
+$global-emphasis-color: #111;
+
+$navbar-nav-item-color: $global-muted-color;
+$navbar-nav-item-hover-color: $global-color;
+$navbar-nav-item-onclick-color: $global-emphasis-color;
+$navbar-nav-item-active-color: $global-emphasis-color;
+
+$nav-primary-item-color: mix($global-color, $global-secondary-background, 50%);
+$nav-primary-item-hover-color: $global-color;
+$nav-primary-item-active-color: $global-emphasis-color;
 
 $container-small-max-width: 800px;
 
@@ -18,10 +30,10 @@ $container-small-max-width: 800px;
 @import "uikit/scss/variables-theme.scss";
 @import "uikit/scss/mixins-theme.scss";
 
-$heading-primary-font-size-m: $heading-primary-font-size-m * 0.6;
+$heading-primary-font-size-m: $heading-primary-font-size-m * 0.5;
 $heading-primary-font-size: $heading-primary-font-size-m;
-$base-h2-font-size: $base-h2-font-size * 0.9;
-$base-h3-font-size: $base-h3-font-size * 0.9;
+$base-h2-font-size: $base-h2-font-size * 0.8;
+$base-h3-font-size: $base-h3-font-size * 0.85;
 
 // Custom mixin overwrites
 @mixin hook-navbar-container() {
@@ -31,7 +43,7 @@ $base-h3-font-size: $base-h3-font-size * 0.9;
   margin-right: auto;
   max-width: $container-small-max-width + 60px;
 
-  padding: 0 10px;
+  padding: 10px 10px;
 }
 
 @mixin hook-nav-primary {
