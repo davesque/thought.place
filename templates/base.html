@@ -10,14 +10,15 @@
   <meta name="description" content="thought.place | a blog by David Sanders">
   <meta name="keywords" content="Web Development, Software Engineering, Computer Science, Python, Haskell, Boulder, Denver, Colorado">
 
-  {#{% compress css %}#}
-  {#<link rel="stylesheet" type="text/x-scss" href="{% static 'site.scss' %}" />#}
-  {#{% endcompress %}#}
+  <link href="https://cdn.rawgit.com/davesque/computer-modern-web-font/master/fonts.css" rel="stylesheet">
 
   <!-- UIkit CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/css/uikit.min.css" />
+  {% compress css %}
+  <link rel="stylesheet" type="text/x-scss" href="{% static 'site.scss' %}" />
+  {% endcompress %}
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/css/uikit.min.css" />-->
 
-  <!-- jQuery is required -->
+  <!-- jQuery required for UIkit -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <!-- UIkit JS -->
@@ -26,48 +27,57 @@
 </head>
 
 <body>
-	<nav class="uk-navbar-container uk-padding uk-padding-remove-vertical uk-box-shadow-medium uk-box-shadow-hover-large" uk-navbar>
-		<div class="uk-navbar-left">
-      <a href="/" class="uk-navbar-item uk-logo">thought.place</a>
-		</div>
+  <div class="uk-offcanvas-content">
+    <nav class="uk-navbar-container uk-margin-medium-top uk-margin-medium-bottom" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="/" class="uk-navbar-item uk-logo">thought.place</a>
+      </div>
 
-		<div class="uk-navbar-right">
-      {% url 'about' as about_url %}
-      {% url 'post_list' as post_list_url %}
-      {% url 'projects' as projects_url %}
+      <div class="uk-navbar-right">
+        {% url 'about' as about_url %}
+        {% url 'post_list' as post_list_url %}
+        {% url 'projects' as projects_url %}
 
-			<ul class="uk-navbar-nav">
-        <li class="uk-visible@s {% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">about</a></li>
-        <li class="uk-visible@s {% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">articles</a></li>
-        <li class="uk-visible@s {% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">projects</a></li>
+        <ul class="uk-navbar-nav">
+          <li class="uk-visible@s {% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">about</a></li>
+          <li class="uk-visible@s {% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">articles</a></li>
+          <li class="uk-visible@s {% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">projects</a></li>
 
-        <a href="#mobile-nav" class="uk-navbar-toggle uk-hidden@s" uk-navbar-toggle-icon uk-toggle></a>
-			</ul>
+          <a href="#offcanvas-nav-primary" class="uk-navbar-toggle uk-hidden@s" type="button" uk-navbar-toggle-icon uk-toggle></a>
+        </ul>
 
-      <div id="mobile-nav" uk-modal="center: true">
-        <div class="uk-modal-dialog uk-modal-body">
-          <button class="uk-modal-close-default" type="button" uk-close></button>
-          <ul class="uk-nav uk-nav-primary uk-nav-center">
-            <li class="{% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">About</a></li>
-            <li class="{% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">Articles</a></li>
-            <li class="{% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">Projects</a></li>
-          </ul>
+        <div id="mobile-nav" uk-modal="center: true">
+          <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <ul class="uk-nav uk-nav-primary uk-nav-center">
+              <li class="{% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">About</a></li>
+              <li class="{% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">Articles</a></li>
+              <li class="{% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">Projects</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-		</div>
-	</nav>
+    </nav>
 
-  <div class="uk-container uk-padding">
-    {% block content %}
-    <article class="uk-article">
-      {% block article-content %}{% endblock %}
-    </article>
-    {% endblock %}
+    <div class="uk-container uk-container-small">
+      {% block content %}
+      <article class="uk-article {% block article-class %}{% endblock %}">
+        {% block article-content %}{% endblock %}
+      </article>
+      {% endblock %}
 
-    {#<footer>#}
-    {#  <div class="left">&copy; 2011-2017 David Sanders</div>#}
-    {#  <div class="center"><a href="/">thought.place</a></div>#}
-    {#  <div class="right">{% block footer-right %}{% endblock %}</div>#}
-    {#</footer>#}
+      <footer class="uk-text-center uk-margin-medium-top uk-margin-large-bottom">&copy; 2011-2017 David Sanders</footer>
+    </div>
+
+    <div id="offcanvas-nav-primary" uk-offcanvas="overlay: true">
+      <div class="uk-offcanvas-bar uk-box-shadow-large uk-flex uk-flex-column">
+        <ul class="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical uk-text-uppercase">
+          <li class="{% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">About</a></li>
+          <li class="{% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">Articles</a></li>
+          <li class="{% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">Projects</a></li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </body>

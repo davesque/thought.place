@@ -1,12 +1,42 @@
 // Custom variables and variable overwrites
-//$global-link-color: #DA7D02;
+$base-code-font-family: 'Computer Modern Typewriter', Courier, monospace;
+$global-font-family: 'Computer Modern Serif', serif;
+$global-font-size: 18px;
+
+$logo-font-family: $base-code-font-family;
+$navbar-nav-item-font-family: $base-code-font-family;
+$logo-font-size: 36px;
+$navbar-nav-item-font-size: 20px;
+$nav-primary-item-font-size: 30px;
+
+$global-color: #3a3a3a;
+$global-secondary-background: #fff;
+
+$container-small-max-width: 800px;
 
 // Import default variables and available mixins
 @import "uikit/scss/variables-theme.scss";
 @import "uikit/scss/mixins-theme.scss";
 
+$heading-primary-font-size-m: $heading-primary-font-size-m * 0.6;
+$heading-primary-font-size: $heading-primary-font-size-m;
+$base-h2-font-size: $base-h2-font-size * 0.9;
+$base-h3-font-size: $base-h3-font-size * 0.9;
+
 // Custom mixin overwrites
-//@mixin hook-card() { color: #000; }
+@mixin hook-navbar-container() {
+  background: none;
+
+  margin-left: auto;
+  margin-right: auto;
+  max-width: $container-small-max-width + 60px;
+
+  padding: 0 10px;
+}
+
+@mixin hook-nav-primary {
+  font-family: $base-code-font-family;
+}
 
 // Import UIkit
 @import "uikit/scss/uikit-theme.scss";

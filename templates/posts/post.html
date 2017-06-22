@@ -4,6 +4,8 @@
 {% block content %}
 {% cache ONE_YEAR_TIMEOUT obj view.request.path %}
 <article class="uk-article">
+  <h1 class="uk-heading-primary">{{ obj.title }}</h1>
+
   <section>
     {{ obj.body|safe }}
   </section>
