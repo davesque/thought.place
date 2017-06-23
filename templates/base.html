@@ -18,7 +18,6 @@
   {% compress css %}
   <link rel="stylesheet" type="text/x-scss" href="{% static 'site.scss' %}" />
   {% endcompress %}
-  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/css/uikit.min.css" />-->
 
   <!-- jQuery required for UIkit -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -27,6 +26,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit-icons.min.js"></script>
 </head>
+
+{% url 'about' as about_url %}
+{% url 'post_list' as post_list_url %}
+{% url 'projects' as projects_url %}
 
 <body>
   <div class="uk-offcanvas-content">
@@ -37,10 +40,6 @@
         </div>
 
         <div class="uk-navbar-right">
-          {% url 'about' as about_url %}
-          {% url 'post_list' as post_list_url %}
-          {% url 'projects' as projects_url %}
-
           <ul class="uk-navbar-nav">
             <li class="uk-visible@s {% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">about</a></li>
             <li class="uk-visible@s {% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">articles</a></li>
@@ -52,6 +51,7 @@
           <div id="mobile-nav" uk-modal="center: true">
             <div class="uk-modal-dialog uk-modal-body">
               <button class="uk-modal-close-default" type="button" uk-close></button>
+
               <ul class="uk-nav uk-nav-primary uk-nav-center">
                 <li class="{% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">About</a></li>
                 <li class="{% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">Articles</a></li>
