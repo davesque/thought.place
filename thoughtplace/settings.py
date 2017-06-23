@@ -105,7 +105,7 @@ try:
     REDIS_URL = os.environ['REDIS_URL']
 except KeyError:
     CACHES = {
-        'default': {'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'}
+        'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}
     }
 else:
     redis_url = urlparse(REDIS_URL)
