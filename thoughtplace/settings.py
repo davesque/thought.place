@@ -108,7 +108,7 @@ except KeyError:
         'default': {'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'}
     }
 else:
-    redis_url = urlparse.urlparse(REDIS_URL)
+    redis_url = urlparse(REDIS_URL)
     CACHES = {
         'default': {
              'BACKEND': 'redis_cache.RedisCache',
