@@ -2,7 +2,7 @@
 
 {% block article-content %}
 {% for obj in objects %}
-<section>
+<section class="{% if not forloop.last %}uk-margin-medium-bottom{% endif %}">
   <hgroup>
     <h2 class="uk-margin-small-bottom"><a class="uk-link-text" href="{{ obj.url }}">{{ obj.title }}</a></h2>
     <h3 class="uk-margin-small-top">{{ obj.published|date:'Y.n.j' }}</h3>
