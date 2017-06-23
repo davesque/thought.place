@@ -1,15 +1,27 @@
 {% extends 'base.html' %}
 
-{% block article-class %}
-uk-text-center
+{% block container-class %}
+uk-container-xsmall
 {% endblock %}
 
 {% block article-content %}
-<p>
-Thoughts about technology and other things.
-</p>
+<div class="uk-visible@s">
+  <p>
+  Thoughts about technology and other things.
+  </p>
 
-<p>
-Contact &hellip; 0x646176657371756540676d61696c2e636f6d
-</p>
+  <p class="uk-text-right uk-margin-medium-top">
+  Contact: 0x646176657371756540676d61696c2e636f6d
+  </p>
+</div>
+
+<div class="uk-hidden@s uk-text-center">
+  <p>
+  Thoughts about technology and other things.
+  </p>
+
+  <p class="uk-margin-medium-top">
+  Contact:<br/>0x646176657371756540676d61696c2e636f6d
+  </p>
+</div>
 {% endblock %}

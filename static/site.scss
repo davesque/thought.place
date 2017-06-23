@@ -1,17 +1,26 @@
 // Custom variables and variable overwrites
-$base-code-font-family: 'Computer Modern Typewriter', Courier, monospace;
-$global-font-family: 'Computer Modern Serif', serif;
-$global-font-size: 18px;
+$serif-font: 'Computer Modern Serif', Times, serif;
+$monospace-font: 'Computer Modern Typewriter', Courier, monospace;
+$sans-serif-font: 'Computer Modern Sans', Helvetica, sans-serif;
+$decorative-font: 'Comfortaa', Courier, monospace;
 
-$logo-font-family: $base-code-font-family;
-$navbar-nav-item-font-family: $base-code-font-family;
+$global-font-family: $serif-font;
+$base-code-font-family: $monospace-font;
+$logo-font-family: $decorative-font;
+$nav-font-family: $decorative-font;
+$navbar-nav-item-font-family: $nav-font-family;
+$nav-item-font-family: $nav-font-family;
+
+$navbar-nav-item-text-transform: lowercase;
+
+$global-font-size: 18px;
 $logo-font-size: 30px;
 $navbar-nav-item-font-size: 22px;
 $nav-primary-item-font-size: 30px;
 
-$global-primary-background: #7cf;
+$global-primary-background: lighten(#39f, 20%);
 $global-secondary-background: #fff;
-$global-color: #333;
+$global-color: #363636;
 $global-muted-color: mix($global-color, $global-primary-background, 40%);
 $global-emphasis-color: #111;
 
@@ -25,6 +34,7 @@ $nav-primary-item-hover-color: $global-color;
 $nav-primary-item-active-color: $global-emphasis-color;
 
 $container-small-max-width: 800px;
+$container-xsmall-max-width: 600px;
 
 // Import default variables and available mixins
 @import "uikit/scss/variables-theme.scss";
@@ -47,8 +57,20 @@ $base-h3-font-size: $base-h3-font-size * 0.85;
 }
 
 @mixin hook-nav-primary {
-  font-family: $base-code-font-family;
+  font-family: $nav-item-font-family;
+  text-transform: $navbar-nav-item-text-transform;
 }
+
+@mixin hook-article {
+  margin-top: $margin-small-margin;
+  margin-bottom: $margin-medium-margin;
+
+  @media (min-width: $breakpoint-medium) {
+    margin-top: $margin-medium-margin * 0.8;
+  }
+}
+
+.uk-container-xsmall { max-width: $container-xsmall-max-width; }
 
 // Import UIkit
 @import "uikit/scss/uikit-theme.scss";
