@@ -12,57 +12,56 @@
 </article>
 {% endcache %}
 
-<div>comments</div>
-<section>
-{% cache ONE_YEAR_TIMEOUT obj view.request.path 'comments' %}
-  {% for c in comments %}
-  <section>
-    <h2 class="{% if c.moderator %}moderator{% endif %}">
-      {% if c.display_website %}
-      <a href="{{ c.display_website }}">{{ c.display_name }}</a> says:
-      {% else %}
-      {{ c.display_name }} says:
-      {% endif %}
-    <h2>
+{#<section>#}
+{#  <section>#}
+{#    <h2>Leave a comment:<h2>#}
 
-    <p><em>Comment #{{ forloop.counter }} posted on {{ c.created_at|date:'Y.n.j \a\t f a e' }}</em></p>
+{#    <div id="token" style="display: none;">{{ csrf_token }}</div>#}
 
-    {% if c.deleted %}
-    [deleted]
-    {% else %}
-    {{ c.html_content|safe }}
-    {% endif %}
-  </section>
-  {% endfor %}
-{% endcache %}
+{#    <form method="post">#}
+{#      <input type="hidden" id="id_csrfmiddlewaretoken" name="csrfmiddlewaretoken">#}
 
-  <section>
-    <h2>Leave a comment:<h2>
+{#      <table>#}
+{#        {{ form.as_table }}#}
+{#      </table>#}
 
-    <div id="token" style="display: none;">{{ csrf_token }}</div>
+{#      <div><input type="submit" value="Submit"></div>#}
+{#    </form>#}
 
-    <form method="post">
-      <input type="hidden" id="id_csrfmiddlewaretoken" name="csrfmiddlewaretoken">
+{#    <script>#}
+{#      $('#id_csrfmiddlewaretoken').val($('#token').text());#}
+{#      $('#id_not_a_you_know_what').val('');#}
+{#    </script>#}
 
-      <table>
-        {{ form.as_table }}
-      </table>
+{#    <noscript>#}
+{#      If you have javascript disabled, you probably know a thing or two about#}
+{#      web pages.  In order to submit this comment form, please copy the text#}
+{#      from the element with id "token" into the form field with id#}
+{#      "id_csrfmiddlewaretoken".  Also, delete the value in the form field with#}
+{#      id "id_not_a_you_know_what" (this is a honeypot field).#}
+{#    </noscript>#}
+{#  </section>#}
 
-      <div><input type="submit" value="Submit"></div>
-    </form>
+{#{% cache ONE_YEAR_TIMEOUT obj view.request.path 'comments' %}#}
+{#  {% for c in comments %}#}
+{#  <section>#}
+{#    <h2 class="{% if c.moderator %}moderator{% endif %}">#}
+{#      {% if c.display_website %}#}
+{#      <a href="{{ c.display_website }}">{{ c.display_name }}</a> says:#}
+{#      {% else %}#}
+{#      {{ c.display_name }} says:#}
+{#      {% endif %}#}
+{#    <h2>#}
 
-    <script>
-      $('#id_csrfmiddlewaretoken').val($('#token').text());
-      $('#id_not_a_you_know_what').val('');
-    </script>
+{#    <p><em>Comment #{{ forloop.counter }} posted on {{ c.created_at|date:'Y.n.j \a\t f a e' }}</em></p>#}
 
-    <noscript>
-      If you have javascript disabled, you probably know a thing or two about
-      web pages.  In order to submit this comment form, please copy the text
-      from the element with id "token" into the form field with id
-      "id_csrfmiddlewaretoken".  Also, delete the value in the form field with
-      id "id_not_a_you_know_what" (this is a honeypot field).
-    </noscript>
-  </section>
-</section>
+{#    {% if c.deleted %}#}
+{#    [deleted]#}
+{#    {% else %}#}
+{#    {{ c.html_content|safe }}#}
+{#    {% endif %}#}
+{#  </section>#}
+{#  {% endfor %}#}
+{#{% endcache %}#}
+{#</section>#}
 {% endblock %}
