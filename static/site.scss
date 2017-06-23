@@ -58,6 +58,17 @@ $nav-primary-item-active-color: $global-emphasis-color;
 $container-small-max-width: 800px;
 $container-xsmall-max-width: 600px;
 
+code {
+  .co { color: lighten(#000, 60%); } // comment
+  .st { color: darken(#ad6, 30%); } // string
+  //.op { color: lighten(#000, 50%); } // operator
+  //.at { color: lighten(#000, 50%); } // attribute
+  .kw { color: darken(#39f, 20%); } // keyword
+  .dv { color: darken(#c44, 15%); } // data value
+  .dt { color: darken(#39f, 20%); } // data type
+  //.fu { color: lighten(#000, 50%); } // function?
+}
+
 // Import default variables and available mixins
 @import "uikit/scss/variables-theme.scss";
 @import "uikit/scss/mixins-theme.scss";
