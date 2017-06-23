@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import sys
+import urlparse
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -99,6 +100,25 @@ DATABASES = {
     'default': dj_database_url.config(),
 }
 DATABASES['default']['CONN_MAX_AGE'] = 500
+
+try:
+    REDIS_URL = os.environ['REDIS_URL']
+except KeyError:
+    CACHES = {
+        'default': {'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'}
+    }
+else:
+    redis_url = urlparse.urlparse(REDIS_URL)
+    CACHES = {
+        'default': {
+             'BACKEND': 'redis_cache.RedisCache',
+             'LOCATION': '{0}:{1}'.format(redis_url.hostname, redis_url.port),
+             'OPTIONS': {
+                 'PASSWORD': redis_url.password,
+                 'DB': 0,
+             }
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
