@@ -47,18 +47,6 @@
 
             <a href="#offcanvas-nav-primary" class="uk-navbar-toggle uk-hidden@s" type="button" uk-navbar-toggle-icon uk-toggle></a>
           </ul>
-
-          <div id="mobile-nav" uk-modal="center: true">
-            <div class="uk-modal-dialog uk-modal-body">
-              <button class="uk-modal-close-default" type="button" uk-close></button>
-
-              <ul class="uk-nav uk-nav-primary uk-nav-center">
-                <li class="{% if request.path == '/' %}uk-active{% endif %}"><a href="{{ about_url }}">About</a></li>
-                <li class="{% if post_list_url in request.path %}uk-active{% endif %}"><a href="{{ post_list_url }}">Articles</a></li>
-                <li class="{% if projects_url in request.path %}uk-active{% endif %}"><a href="{{ projects_url }}">Projects</a></li>
-              </ul>
-            </div>
-          </div>
         </div>
       </nav>
     </div>
