@@ -1,11 +1,9 @@
 ---
-title: SSH tunnels FTW! (Or how to test your local dev site on a mobile phone)
+title: SSH Tunnels for Mobile Development
 published: 2015-01-24T09:00:00-0400
 ---
 
 ## The Problem:
-
-Here's a classic web development problem:
 
 You are developing a site locally and eventually find yourself needing to test
 in a mobile browser.  You try a few things like using Chrome's device emulator
