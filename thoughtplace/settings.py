@@ -101,9 +101,8 @@ DATABASES = {
 }
 DATABASES['default']['CONN_MAX_AGE'] = 500
 
-try:
-    REDIS_URL = os.environ['REDIS_URL']
-except KeyError:
+REDIS_URL = os.getenv('REDIS_URL')
+if REDIS_URL is None:
     CACHES = {
         'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}
     }
