@@ -1,6 +1,5 @@
 ---
 title: jQuery.live() performance issues
-published: 2011-06-22T09:20:00-0400
 ---
 
 Here's an interesting issue that came up recently.  The other day, I managed to

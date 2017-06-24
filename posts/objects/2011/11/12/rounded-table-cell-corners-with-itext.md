@@ -1,6 +1,5 @@
 ---
 title: Rounded table cell corners with iText
-published: 2011-11-12T09:20:00-0400
 ---
 
 Recently, I researched and made use of the [iText PDF](http://itextpdf.com/)
