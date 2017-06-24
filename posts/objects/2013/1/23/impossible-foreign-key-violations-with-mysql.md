@@ -1,6 +1,5 @@
 ---
 title: '"Impossible" foreign key violations with MySQL'
-published: 2013-01-23T09:20:00-0400
 ---
 
 Ever had the experience with MySQL where it complains that a foreign key
