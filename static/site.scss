@@ -17,12 +17,13 @@ $global-xxlarge-font-size: 1.6rem;
 $global-xlarge-font-size: 1.5rem;
 $global-large-font-size: 1.3rem;
 $global-medium-font-size: 1.15rem;
-$global-font-size: 18px;
+$global-font-size: 17px;
 $global-small-font-size: 0.875rem;
 
-$logo-font-size: 30px;
-$navbar-nav-item-font-size: 22px;
-$nav-primary-item-font-size: 30px;
+$logo-font-size: 27px;
+$navbar-nav-item-font-size: 20px;
+$nav-primary-item-font-size: $logo-font-size;
+$base-code-font-size: $global-font-size - 1px;
 
 $heading-primary-font-size-m: $global-xlarge-font-size;
 $heading-primary-font-size: $heading-primary-font-size-m;
@@ -55,7 +56,7 @@ $nav-primary-item-color: mix($global-color, $global-secondary-background, 50%);
 $nav-primary-item-hover-color: $global-color;
 $nav-primary-item-active-color: $global-emphasis-color;
 
-$container-small-max-width: 800px;
+$container-small-max-width: 700px;
 $container-xsmall-max-width: 600px;
 
 code {
@@ -90,12 +91,8 @@ code {
 }
 
 @mixin hook-article {
-  margin-top: $margin-small-margin;
+  margin-top: $margin-medium-margin;
   margin-bottom: $margin-medium-margin;
-
-  @media (min-width: $breakpoint-medium) {
-    margin-top: $margin-medium-margin * 0.8;
-  }
 }
 
 @mixin hook-container-misc {

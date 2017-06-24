@@ -8,7 +8,7 @@
     <h3 class="uk-margin-small-top">{{ obj.published|date:'Y.n.j' }}</h3>
   </hgroup>
 
-  <p>{{ obj.body|truncatewords_html:30|striptags }}</p>
+  <p class="{% if forloop.last %}uk-margin-remove-bottom{% endif %}">{{ obj.body|truncatewords_html:30|striptags }}</p>
 </section>
 {% endfor %}
 {% endblock %}
