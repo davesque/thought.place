@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% load cache %}
+{% load cache thoughtplace_tags %}
 
 {% block content %}
 {% cache ONE_YEAR_TIMEOUT obj view.request.path %}
-<article class="uk-article uk-text-justify">
+<article class="uk-article uk-text-justify uk-margin-remove-bottom">
   <h1 class="uk-heading-primary">{{ obj.title }}</h1>
 
   <section>
@@ -12,56 +12,68 @@
 </article>
 {% endcache %}
 
-{#<section>#}
-{#  <section>#}
-{#    <h2>Leave a comment:<h2>#}
+<section class="uk-margin-top">
+  <h2>Leave a comment:</h2>
 
-{#    <div id="token" style="display: none;">{{ csrf_token }}</div>#}
+  <div id="token" style="display: none;">{{ csrf_token }}</div>
 
-{#    <form method="post">#}
-{#      <input type="hidden" id="id_csrfmiddlewaretoken" name="csrfmiddlewaretoken">#}
+  <form method="post">
+    <fieldset class="uk-fieldset">
+      {% csrf_token %}
+      {{ form.not_a_you_know_what }}
 
-{#      <table>#}
-{#        {{ form.as_table }}#}
-{#      </table>#}
+      {{ form.non_field_errors }}
 
-{#      <div><input type="submit" value="Submit"></div>#}
-{#    </form>#}
+      <p class="uk-margin-remove-top">
+      {{ form.name|add_placeholder|add_classes:"uk-input" }}
+      {{ form.name.errors }}
+      </p>
 
-{#    <script>#}
-{#      $('#id_csrfmiddlewaretoken').val($('#token').text());#}
-{#      $('#id_not_a_you_know_what').val('');#}
-{#    </script>#}
+      <p>
+      {{ form.website|add_placeholder|add_classes:"uk-input" }}
+      {{ form.website.errors }}
+      </p>
 
-{#    <noscript>#}
-{#      If you have javascript disabled, you probably know a thing or two about#}
-{#      web pages.  In order to submit this comment form, please copy the text#}
-{#      from the element with id "token" into the form field with id#}
-{#      "id_csrfmiddlewaretoken".  Also, delete the value in the form field with#}
-{#      id "id_not_a_you_know_what" (this is a honeypot field).#}
-{#    </noscript>#}
-{#  </section>#}
+      <p>
+      {{ form.comment|add_placeholder|add_classes:"uk-textarea" }}
+      {{ form.comment.errors }}
+      </p>
 
-{#{% cache ONE_YEAR_TIMEOUT obj view.request.path 'comments' %}#}
-{#  {% for c in comments %}#}
-{#  <section>#}
-{#    <h2 class="{% if c.moderator %}moderator{% endif %}">#}
-{#      {% if c.display_website %}#}
-{#      <a href="{{ c.display_website }}">{{ c.display_name }}</a> says:#}
-{#      {% else %}#}
-{#      {{ c.display_name }} says:#}
-{#      {% endif %}#}
-{#    <h2>#}
+      <input type="submit" value="submit" class="uk-button uk-button-default uk-align-right uk-text-lowercase">
+    </fieldset>
+  </form>
 
-{#    <p><em>Comment #{{ forloop.counter }} posted on {{ c.created_at|date:'Y.n.j \a\t f a e' }}</em></p>#}
+  <script>
+    $('#id_csrfmiddlewaretoken').val($('#token').text());
+    $('#id_not_a_you_know_what').val('');
+  </script>
 
-{#    {% if c.deleted %}#}
-{#    [deleted]#}
-{#    {% else %}#}
-{#    {{ c.html_content|safe }}#}
-{#    {% endif %}#}
-{#  </section>#}
-{#  {% endfor %}#}
-{#{% endcache %}#}
-{#</section>#}
+  <noscript>
+    If you have javascript disabled, you probably know a thing or two about
+    web pages.  In order to submit this comment form, please copy the text
+    from the element with id "token" into the form field with id
+    "id_csrfmiddlewaretoken".  Also, delete the value in the form field with
+    id "id_not_a_you_know_what" (this is a honeypot field).
+  </noscript>
+</section>
+
+{% cache ONE_YEAR_TIMEOUT obj view.request.path 'comments' %}
+{% for c in comments %}
+  <section class="uk-margin-medium-bottom">
+    <h2 class="uk-h3 uk-margin-remove-bottom {% if c.moderator %}moderator{% endif %}">
+      {% if c.display_website %}
+      <a href="{{ c.display_website }}">{{ c.display_name }}</a> says:
+      {% else %}
+      {{ c.display_name }} says:
+      {% endif %}
+    </h2>
+
+    <p class="uk-text-small uk-margin-small-top">
+    <em>Comment #{{ forloop.counter }} ({{ c.created_at|date:'Y.n.j \a\t f a e' }})</em>
+    </p>
+
+    {% if c.deleted %}[deleted]{% else %}{{ c.html_content|safe }}{% endif %}
+  </section>
+{% endfor %}
+{% endcache %}
 {% endblock %}
