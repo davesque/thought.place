@@ -9,12 +9,12 @@ from thoughtplace.cache import ONE_YEAR_TIMEOUT
 from .models import Post
 
 
-class IndexView(TemplateView):
+class PostListView(TemplateView):
     template_name = 'posts/index.html'
     pseudo_model = Post
 
     def get_context_data(self, *args, **kwargs):
-        context = super(IndexView, self).get_context_data(*args, **kwargs)
+        context = super(PostListView, self).get_context_data(*args, **kwargs)
 
         objects = self.pseudo_model.get_objects().values()
         objects = filter(lambda o: o.published, objects)
@@ -24,18 +24,18 @@ class IndexView(TemplateView):
 
         return context
 
-post_list = IndexView.as_view()
+post_list = PostListView.as_view()
 
 
-class PostView(TemplateView):
+class PostDetailView(TemplateView):
     template_name = 'posts/post.html'
     pseudo_model = Post
 
     def post(self, *args, **kwargs):
-        return super(PostView, self).get(*args, **kwargs)
+        return super(PostDetailView, self).get(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
-        context = super(PostView, self).get_context_data(*args, **kwargs)
+        context = super(PostDetailView, self).get_context_data(*args, **kwargs)
 
         id = (
             self.kwargs['year'],
@@ -66,4 +66,4 @@ class PostView(TemplateView):
 
         return context
 
-post_detail = never_cache(PostView.as_view())
+post_detail = never_cache(PostDetailView.as_view())
