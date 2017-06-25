@@ -10,7 +10,7 @@ from .models import Post
 
 
 class PostListView(TemplateView):
-    template_name = 'posts/index.html'
+    template_name = 'posts/post_list.html'
     pseudo_model = Post
 
     def get_context_data(self, *args, **kwargs):
@@ -28,7 +28,7 @@ post_list = PostListView.as_view()
 
 
 class PostDetailView(TemplateView):
-    template_name = 'posts/post.html'
+    template_name = 'posts/post_detail.html'
     pseudo_model = Post
 
     def post(self, *args, **kwargs):
