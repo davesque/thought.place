@@ -10,6 +10,8 @@ $logo-font-family: $decorative-font;
 $nav-font-family: $decorative-font;
 $navbar-nav-item-font-family: $nav-font-family;
 $nav-item-font-family: $nav-font-family;
+$base-button-font-family: $decorative-font;
+$base-form-font-family: $monospace-font;
 
 $navbar-nav-item-text-transform: lowercase;
 
@@ -25,6 +27,7 @@ $navbar-nav-item-font-size: 20px;
 $nav-primary-item-font-size: $logo-font-size;
 $base-code-font-size: 0.9rem;
 $base-pre-font-size: 0.9rem;
+$base-form-font-size: 0.9rem;
 
 $heading-primary-font-size-m: $global-xlarge-font-size;
 $heading-primary-font-size: $heading-primary-font-size-m;
@@ -132,6 +135,15 @@ code {
 
 @mixin hook-base-h1 {
   margin-bottom: $base-margin-vertical * 1.5;
+}
+
+@mixin tp-hook-button {
+  font-family: $base-button-font-family;
+}
+
+@mixin tp-hook-form {
+  font-family: $base-form-font-family;
+  font-size: $base-form-font-size;
 }
 
 // Import UIkit
