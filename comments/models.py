@@ -22,13 +22,12 @@ class Comment(models.Model):
     url = models.CharField(db_index=True, max_length=255)
     ip = models.CharField(max_length=255)
 
-    name = models.CharField(help_text='Optional.  Leave blank for anonymous comments.', max_length=255, blank=True, null=True)
-    website = models.URLField(help_text='Optional.', max_length=255, blank=True, null=True)
+    name = models.CharField(help_text='Leave blank for anonymous comments.', max_length=255, blank=True, null=True)
+    website = models.URLField(max_length=255, blank=True, null=True)
 
     comment = models.TextField(
         help_text='''
-In markdown format.  To reply to a comment, refer to it by name and/or number.
-e.g.  "Fred #4", "David #1", "comment #11", etc.
+In markdown format. To reply to someone, refer to them by name or to their comment by number. (e.g.  "Jane #4", "John #1", "comment #11", etc.)
 '''[1:-1],
     )
 
