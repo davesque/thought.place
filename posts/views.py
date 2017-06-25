@@ -17,8 +17,8 @@ class PostListView(TemplateView):
         context = super(PostListView, self).get_context_data(*args, **kwargs)
 
         objects = self.pseudo_model.get_objects().values()
-        objects = filter(lambda o: o.published, objects)
-        objects = sorted(objects, key=lambda o: o.published, reverse=True)
+        objects = filter(lambda i: i.published, objects)
+        objects = sorted(objects, key=lambda i: i.published, reverse=True)
 
         context['objects'] = objects
 
@@ -45,23 +45,23 @@ class PostDetailView(TemplateView):
         )
 
         try:
-            o = self.pseudo_model.get_object(post_id)
+            obj = self.pseudo_model.get_object(post_id)
         except KeyError:
             raise Http404
 
-        context['obj'] = o
-        context['comments'] = Comment.objects.filter(url=o.url)
+        context['obj'] = obj
+        context['comments'] = Comment.objects.filter(url=obj.url)
 
         if self.request.method == 'POST':
-            f = CommentForm(self.request.POST, obj=o, request=self.request)
+            form = CommentForm(self.request.POST, obj=obj, request=self.request)
 
-            if f.is_valid():
-                f.save()
+            if form.is_valid():
+                form.save()
                 messages.success(self.request, 'Your comment has been posted.')
         else:
-            f = CommentForm()
+            form = CommentForm()
 
-        context['form'] = f
+        context['form'] = form
         context['ONE_YEAR_TIMEOUT'] = ONE_YEAR_TIMEOUT
 
         return context
