@@ -10,10 +10,7 @@ register = template.Library()
 def add_placeholder(field):
     tree = html.fragment_fromstring(str(field))
 
-    optional = '' if field.field.required else ' Optional.'
-    help_text = f' {field.help_text}' if field.help_text else ''
-
-    tree.attrib['placeholder'] = f'{field.label}.{optional}{help_text}'
+    tree.attrib['placeholder'] = f'{field.help_text}'
 
     return mark_safe(html.tostring(tree).decode('utf-8'))
 
