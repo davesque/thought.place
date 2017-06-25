@@ -31,8 +31,7 @@ In markdown format. To reply to someone, refer to them by name or to their comme
 '''[1:-1],
     )
 
-    moderator = models.BooleanField(default=False, editable=False)
-    flagged = models.BooleanField(default=False)
+    moderator = models.BooleanField(default=False)
     deleted = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -41,7 +40,7 @@ In markdown format. To reply to someone, refer to them by name or to their comme
     class Meta:
         ordering = ('created_at',)
 
-    def __unicode__(self):
+    def __str__(self):
         return '#{0} on {1} by {2}'.format(
             self.id,
             self.url,
