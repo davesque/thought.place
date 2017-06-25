@@ -37,7 +37,7 @@ class PostDetailView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(PostDetailView, self).get_context_data(*args, **kwargs)
 
-        id = (
+        post_id = (
             self.kwargs['year'],
             self.kwargs['month'],
             self.kwargs['day'],
@@ -45,7 +45,7 @@ class PostDetailView(TemplateView):
         )
 
         try:
-            o = self.pseudo_model.get_object(id)
+            o = self.pseudo_model.get_object(post_id)
         except KeyError:
             raise Http404
 
