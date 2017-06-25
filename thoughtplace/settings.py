@@ -86,6 +86,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'thoughtplace_tags': 'thoughtplace.templatetags.thoughtplace_tags',
+            },
         },
     },
 ]
