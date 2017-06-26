@@ -1,5 +1,8 @@
 from django import forms
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 
 from .models import Comment
 
@@ -37,6 +40,14 @@ class CommentForm(forms.ModelForm):
 
         comment.save()
 
-        # TODO: Send notification email
+        # Send notification email
+        admin_emails = list(User.objects.filter(is_superuser=True).values_list('email', flat=True))
+        send_mail(
+            f'{comment.display_name} commented on {comment.url}',
+            f'{comment.display_name} says:\n\n{comment.comment}',
+            settings.DEFAULT_FROM_EMAIL,
+            admin_emails,
+            fail_silently=False,
+        )
 
         return comment
