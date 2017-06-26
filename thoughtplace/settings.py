@@ -240,7 +240,7 @@ else:
     SECURE_SSL_REDIRECT = False
 
 # Email
-DEFAULT_FROM_EMAIL = 'notifications@thought.place'
+DEFAULT_FROM_EMAIL = 'thoughtplace@thought.place'
 
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 
