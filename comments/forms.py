@@ -44,7 +44,7 @@ class CommentForm(forms.ModelForm):
         admin_emails = list(User.objects.filter(is_superuser=True).values_list('email', flat=True))
         send_mail(
             f'{comment.display_name} commented on {comment.url}',
-            f'{comment.display_name} says:\n\n{comment.comment}',
+            comment.comment,
             settings.DEFAULT_FROM_EMAIL,
             admin_emails,
             fail_silently=False,
