@@ -238,3 +238,18 @@ if os.getenv('FULLY_SECURE', False):
     CSRF_COOKIE_SECURE = True
 else:
     SECURE_SSL_REDIRECT = False
+
+# Email
+DEFAULT_FROM_EMAIL = 'notifications@thought.place'
+
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+
+if TESTING:
+    EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+elif EMAIL_HOST is not None:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_PORT = os.environ['EMAIL_PORT']
+    EMAIL_HOST_USER = os.environ['SENDGRID_USERNAME']
+    EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
