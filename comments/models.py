@@ -12,7 +12,7 @@ class Comment(models.Model):
 
     comment = models.TextField(
         help_text='''
-Comment here.  Math supported via KaTeX.  Use "$$", "\\(", or "\\[" delimiters.  To reply to someone, refer to them by name or to their comment by number e.g. "Jane #4", "comment #11", etc.
+Comment here.  To reply to someone, refer to them by name or to their comment by number e.g. "Jane #4", "comment #11", etc.
 '''[1:-1],
     )
 
