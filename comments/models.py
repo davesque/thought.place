@@ -1,21 +1,6 @@
-from django.core.cache import cache
 from django.db import models
-from lxml.html.clean import clean_html
-from pypandoc import convert
 
-from thoughtplace.cache import get_or_cache, ONE_YEAR_TIMEOUT, delete_cached_fragment
-
-
-def cache_method(get_key, timeout):
-    def decorator(old_method):
-        def new_method(self, *args, **kwargs):
-            return get_or_cache(
-                get_key(self),
-                lambda: old_method(self, *args, **kwargs),
-                timeout,
-            )
-        return new_method
-    return decorator
+from thoughtplace.cache import delete_cached_fragment
 
 
 class Comment(models.Model):
@@ -27,7 +12,7 @@ class Comment(models.Model):
 
     comment = models.TextField(
         help_text='''
-Comment here. Markdown format supported. To reply to someone, refer to them by name or to their comment by number. (e.g.  "Jane #4", "John #1", "comment #11", etc.)
+Comment here.  Math supported via KaTeX.  Use "$$", "\\(", or "\\[" delimiters.  To reply to someone, refer to them by name or to their comment by number e.g. "Jane #4", "comment #11", etc.
 '''[1:-1],
     )
 
@@ -58,21 +43,8 @@ Comment here. Markdown format supported. To reply to someone, refer to them by n
         super(Comment, self).delete(*args, **kwargs)
 
     def delete_related_cache(self):
-        # Delete converted markdown cache
-        cache.delete(self.get_html_content_key())
-
         # Delete cached sections for related post or thought
         delete_cached_fragment('obj', self.url, 'comments')
-
-    def get_html_content_key(self):
-        return 'comment_{0}_html_content'.format(self.id)
-
-    @cache_method(
-        get_html_content_key,
-        ONE_YEAR_TIMEOUT,
-    )
-    def html_content(self):
-        return clean_html(convert(self.comment.strip(), 'html', format='markdown'))
 
     @property
     def display_name(self):

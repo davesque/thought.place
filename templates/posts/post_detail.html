@@ -72,7 +72,7 @@
     <em>Comment #{{ forloop.counter }} ({{ c.created_at|date:'Y.n.j \a\t f a e' }})</em>
     </p>
 
-    {% if c.deleted %}[deleted]{% else %}{{ c.html_content|safe }}{% endif %}
+    {% if c.deleted %}[deleted]{% else %}{{ c.comment }}{% endif %}
   </section>
 {% endfor %}
 {% endcache %}
