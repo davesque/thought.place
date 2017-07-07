@@ -139,6 +139,6 @@ an equal chance of being clicked by our walker (each state transition has an
 equal chance of taking place).  This gives the following equation for a given
 link's probability of being clicked:
 
-\\[
-  \text{probability of clicking link $x$} = \frac{1}{\text{total \# of links on the page where $x$ is found}}
-\\]
+$$
+\text{probability of clicking link $x$} = \frac{1}{\text{total # of links on the page where $x$ is found}}
+$$

@@ -120,7 +120,7 @@ def tex_filter(key, value, format, _):
 
 
 def convert_with_tex(content):
-    json = convert(content, '--from', 'markdown', '--to', 'json', '--katex')
+    json = convert(content, '--from', 'markdown', '--to', 'json', '--mathjax')
 
     altered = applyJSONFilters([tex_filter], json)
 
