@@ -13,3 +13,5 @@ lxml
 pypandoc
 PyYAML
 python-dateutil
+backports.tempfile
+pandocfilters
