@@ -10,7 +10,6 @@ markdown
 django-compressor
 libsass
 lxml
-pypandoc
 PyYAML
 python-dateutil
 backports.tempfile

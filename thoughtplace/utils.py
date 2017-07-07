@@ -12,14 +12,55 @@ import os
 import re
 
 from backports.tempfile import TemporaryDirectory
-from django.core.cache import cache
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.template.loader import render_to_string
 from pandocfilters import RawBlock, applyJSONFilters
 
 
 logger = logging.getLogger(__name__)
+static_storage = FileSystemStorage(
+    settings.STATIC_ROOT,
+    base_url=settings.STATIC_URL,
+)
 
 ARGUMENT_RE = re.compile(r'^[-]+(.*)$')
+
+
+def run_with_checks(command, args, input=None):
+    """
+    Runs the given executable with error reporting.
+    """
+    p = Popen(
+        (command,) + args,
+        stdin=None if input is None else PIPE,
+        stdout=PIPE, stderr=PIPE,
+    )
+
+    if p.returncode is not None:
+        raise RuntimeError('{} exited with status {} before communication: {}'.format(
+            command,
+            p.returncode,
+            p.stderr.read(),
+        ))
+
+    try:
+        out, err = p.communicate(input=input)
+    except OSError:
+        raise RuntimeError('{} exited with status {} during communication'.format(
+            command,
+            p.returncode,
+        ))
+
+    if p.returncode != 0:
+        raise RuntimeError('{} exited with status {} during communication. stdout: {}, stderr: {}'.format(
+            command,
+            p.returncode,
+            out.decode('utf-8'),
+            err.decode('utf-8'),
+        ))
+
+    return out.decode('utf-8')
 
 
 def tex_to_svg(template_name, context):
@@ -28,64 +69,35 @@ def tex_to_svg(template_name, context):
         context=context,
     ).encode('utf-8')
 
-    tex_hash = hashlib.md5(tex_content).hexdigest()
-    key = 'django_tikz:' + tex_hash
+    hsh = hashlib.md5(tex_content).hexdigest()
+    path = os.path.join('tex-cache', '{}.svg'.format(hsh))
 
-    cached = cache.get(key)
-    if cached is not None:
-        return cached
+    if static_storage.exists(path):
+        return static_storage.url(path)
 
     with TemporaryDirectory() as tmp_dir:
-        pdflatex_proc = Popen(
-            ['pdflatex', '-output-directory', tmp_dir, '-jobname', tex_hash, '--'],
-            stdin=PIPE,
-            stdout=DEVNULL, stderr=DEVNULL,
+        run_with_checks(
+            'pdflatex',
+            ('-output-directory', tmp_dir, '-jobname', hsh, '--'),
+            input=tex_content,
         )
-        pdflatex_proc.communicate(tex_content)
 
-        pdf_file = os.path.join(tmp_dir, tex_hash + '.pdf')
-        svg_file = os.path.join(tmp_dir, tex_hash + '.svg')
+        pdf_file = os.path.join(tmp_dir, hsh + '.pdf')
+        svg_file = os.path.join(tmp_dir, hsh + '.svg')
 
-        pdf2svg_proc = Popen(
-            ['pdf2svg', pdf_file, svg_file],
-            stdout=DEVNULL, stderr=DEVNULL,
-        )
-        pdf2svg_proc.wait()
+        run_with_checks('pdf2svg', (pdf_file, svg_file))
 
         with open(svg_file, 'r') as f:
-            svg_content = f.read()
+            static_storage.save(path, f)
 
-    cache.set(key, svg_content)
-
-    return svg_content
+    return static_storage.url(path)
 
 
 def convert(input, *args):
     """
     Converts the given string input with pandoc and the given arguments.
     """
-    p = Popen(('pandoc',) + args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
-
-    if p.returncode is not None:
-        raise RuntimeError('Pandoc exited with status {} before conversion: {}'.format(
-            p.returncode,
-            p.stderr.read(),
-        ))
-
-    try:
-        out, err = p.communicate(input.encode('utf-8'))
-    except OSError:
-        raise RuntimeError('Pandoc exited with status {} during conversion'.format(
-            p.returncode,
-        ))
-
-    if p.returncode != 0:
-        raise RuntimeError('Pandoc exited with status {} during conversion: {}'.format(
-            p.returncode,
-            err,
-        ))
-
-    return out.decode('utf-8')
+    return run_with_checks('pandoc', args, input=input.encode('utf-8'))
 
 
 def tex_filter(key, value, format, _):
@@ -101,11 +113,10 @@ def tex_filter(key, value, format, _):
     if fmt != 'latex' or r'\begin{tikzpicture}' not in content:
         return
 
-    svg = tex_to_svg('standalone.tex', {'content': content})
-    if svg.startswith(r'<?xml'):
-        svg = svg.split('\n', 1)[1]
+    url = tex_to_svg('standalone.tex', {'content': content})
+    img = '<img class="uk-align-center" src="{}"/>'.format(url)
 
-    return RawBlock('html', svg)
+    return RawBlock('html', img)
 
 
 def convert_with_tex(content):

@@ -4,12 +4,13 @@ import re
 from dateutil.parser import parse
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from pypandoc import convert
 from yaml import load
 try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
+
+from thoughtplace.utils import convert_with_tex
 
 
 class Post(object):
@@ -38,7 +39,7 @@ class Post(object):
         self.published = parse(published) if published else None
 
         # Convert post body from markdown to html
-        self.body = convert(parts[1].strip(), 'html', format='markdown')
+        self.body = convert_with_tex(parts[1].strip())
 
     @classmethod
     def get_objects(cls):

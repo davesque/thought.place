@@ -1,7 +1,9 @@
 \documentclass[crop,tikz]{standalone}
 
-\makeatletter
+\usetikzlibrary{arrows}
+
+\tikzstyle{every path}=[line width=.9pt]
 
 \begin{document}
-  {{ content }}
+  {{ content|safe }}
 \end{document}
