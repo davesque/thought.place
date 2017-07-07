@@ -128,9 +128,9 @@ this problem.
 ### Overview
 
 More abstractly, the process of doing our infinite walk like we described above
-can be represented with a state machine.  Each page on the web is one state of
-the state machine and all the links between pages are the transitions between
-those states.
+can be represented with a state machine.  Each page on the web is one state in
+the machine and all the links between pages are the transitions between those
+states.
 
 Let's say that each link has an equal probability of being taken by our random
 walker robot during one step of its walk.  This means that, if our walker is on
@@ -142,3 +142,120 @@ link's probability of being clicked:
 $$
 \text{probability of clicking link $x$} = \frac{1}{\text{total # of links on the page where $x$ is found}}
 $$
+
+We're beginning to see that we're not just talking about a state machine, but a
+*probabilistic* one &mdash; that is, a state machine which randomly transitions
+between states based on some set of probabilities for each state.
+
+Let's visualize this.  We imagine that our walker has come to page 1 and is now
+picking which page to go to from there.  It gives each link on page 1 an equal
+probability of being clicked as seen in figure 5:
+
+<figure>
+  \begin{tikzpicture}[->,>=latex',scale=1.5,transform shape]
+    \definecolor{nodecolor}{RGB}{204,204,255}
+    \tikzset{vertex/.style = {shape=circle,fill=nodecolor,draw,minimum size=.3in}}
+
+    \node[vertex] (1) at (0,0) {1};
+    \node[vertex] (2) at (3,1.5) {2};
+    \node[vertex] (3) at (3,0) {3};
+    \node[vertex] (4) at (3,-1.5) {4};
+
+    \path (1) edge node[above] {$\frac{1}{3}$} (2);
+    \path (1) edge node[above] {$\frac{1}{3}$} (3);
+    \path (1) edge node[above] {$\frac{1}{3}$} (4);
+  \end{tikzpicture}
+
+  <figcaption>Figure 5: State machine with transition probabilities.</figcaption>
+</figure>
+
+To illustrate this idea further, let's annotate figure 2 with some
+probabilities.  In figure 6, we see from these annotations that each link from
+page 2 has a 1 in 2 chance of being clicked.  The link from page 1 has a 100%
+chance of being clicked as does the link from page 3:
+
+<figure>
+  \begin{tikzpicture}[->,>=latex',scale=1.5,transform shape]
+    \definecolor{nodecolor}{RGB}{204,204,255}
+    \tikzset{vertex/.style = {shape=circle,fill=nodecolor,draw,minimum size=.3in}}
+
+    \node[vertex] (1) at (0,2) {1};
+    \node[vertex] (2) at (-1.5,0) {2};
+    \node[vertex] (3) at (1.5,0) {3};
+
+    \path (1) edge[bend left] node[below right] {1} (2);
+    \path (2) edge[bend left] node[above left] {$\frac{1}{2}$} (1);
+    \path (2) edge node[below] {$\frac{1}{2}$} (3);
+    \path (3) edge node[above right] {1} (1);
+  \end{tikzpicture}
+
+  <figcaption>Figure 6: Another state machine with transition probabilities.</figcaption>
+</figure>
+
+Since we're trying to be systematic, we need a way to represent this process
+mathematically.  As it turns out, there is a way to do this using linear
+algebra.
+
+### Linear Algebraic Approach
+
+In linear algebra, we represent probabilistic state machines using **transition
+matrices**.  A **transition matrix** is a matrix which encodes the vertices and
+edges in a graph, giving a probability or weight to each edge.  It is defined
+in terms of the **adjacency matrix** of a graph as well as the graph's **degree
+matrix**.
+
+A graph's adjacency matrix $A$ is defined as follows:
+$$
+A_{ij} = \begin{cases}
+  1\ \text{if vertex $i$ links to vertex $j$} \\
+  0\ \text{otherwise}
+\end{cases}
+$$
+This gives us the following adjacency matrix for the graph seen in figure 6:
+$$
+A = \begin{bmatrix}
+  0 & 1 & 0 \\
+  1 & 0 & 1 \\
+  1 & 0 & 0
+\end{bmatrix}
+$$
+Now for the degree matrix $D$.  It's defined as follows:
+$$
+D_{ij} = \begin{cases}
+  \text{# of links leaving vertex $i$ if $i = j$} \\
+  0\ \text{otherwise}
+\end{cases}
+$$
+For our graph, that looks like this:
+$$
+D = \begin{bmatrix}
+  1 & 0 & 0 \\
+  0 & 2 & 0 \\
+  0 & 0 & 1
+\end{bmatrix}
+$$
+After all this, we can finally define our transition matrix as follows:
+$$
+\begin{align*}
+  T &= A^T D^{-1} \\
+    &= \begin{bmatrix}
+      0 & 1 & 1 \\
+      1 & 0 & 0 \\
+      0 & 1 & 0
+    \end{bmatrix} \begin{bmatrix}
+      1 & 0 & 0 \\
+      0 & \sfrac{1}{2} & 0 \\
+      0 & 0 & 1
+    \end{bmatrix} \\
+    &= \begin{bmatrix}
+      0 & \sfrac{1}{2} & 1 \\
+      1 & 0 & 0 \\
+      0 & \sfrac{1}{2} & 0
+    \end{bmatrix}
+\end{align*}
+$$
+What are we seeing here?  In column 1 of $T$, we see 1 in the second row and
+0's in the other rows.  This means there's a 100\% probability of moving to
+page 2 from page 1.  Therefore, column 1 corresponds to the probabilities of
+transitioning from page 1 to any other page.  Likewise, column 2 corresponds to
+the transition probabilites for page 2 and so on.
