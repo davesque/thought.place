@@ -146,5 +146,12 @@ code {
   font-size: $base-form-font-size;
 }
 
+@mixin hook-base-misc {
+  figcaption {
+    font-size: 0.925rem;
+    text-align: center;
+  }
+}
+
 // Import UIkit
 @import "uikit/scss/uikit-theme.scss";
