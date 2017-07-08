@@ -15,10 +15,10 @@ $base-form-font-family: $monospace-font;
 
 $navbar-nav-item-text-transform: lowercase;
 
-$global-xxlarge-font-size: 1.6rem;
-$global-xlarge-font-size: 1.5rem;
-$global-large-font-size: 1.3rem;
-$global-medium-font-size: 1.15rem;
+$global-xxlarge-font-size: 1.8rem;
+$global-xlarge-font-size: 1.7rem;
+$global-large-font-size: 1.5rem;
+$global-medium-font-size: 1.3rem;
 $global-font-size: 17px;
 $global-small-font-size: 0.875rem;
 
@@ -135,6 +135,7 @@ code {
 
 @mixin hook-base-h1 {
   margin-bottom: $base-margin-vertical * 1.5;
+  text-align: center;
 }
 
 @mixin tp-hook-button {
