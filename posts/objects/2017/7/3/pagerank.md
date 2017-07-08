@@ -302,3 +302,323 @@ $\mathbf{s}_2$:
     0 & \sfrac{1}{2} & 0
   } \M{0 \\ 1 \\ 0}
 \end{align*}
+
+Now, looking at the value of $\mathbf{s}_2$, we see there's a 50% probability
+that we're on page 1 and a 50% probability that we're on page 3.  Put another
+way, there was an equal chance that our random walker went from page 2 back to
+page 1 or from page 2 on to page 3.
+
+Let's continue this process for several more steps:
+
+\begin{align*}
+  \B{s}_3 &= \M{%
+    0.5 \\
+    0.5 \\
+    0
+  } = \M{%
+    0 & 0.5 & 1 \\
+    1 & 0 & 0 \\
+    0 & 0.5 & 0
+  } \M{%
+    0.5 \\
+    0 \\
+    0.5
+  } \\
+  \B{s}_4 &= \M{%
+    0.25 \\
+    0.5 \\
+    0.25
+  } = T \M{%
+    0.5 \\
+    0.5 \\
+    0
+  } \\
+  \B{s}_5 &= \M{%
+    0.5 \\
+    0.25 \\
+    0.25
+  } = T \M{%
+    0.25 \\
+    0.5 \\
+    0.25
+  } \\
+  \B{s}_6 &= \M{%
+    0.375 \\
+    0.5 \\
+    0.125
+  } = T \M{%
+    0.5 \\
+    0.25 \\
+    0.25
+  } \\
+  \B{s}_7 &= \M{%
+    0.375 \\
+    0.375 \\
+    0.25
+  } = T \M{%
+    0.375 \\
+    0.5 \\
+    0.125
+  } \\
+  \B{s}_8 &= \M{%
+    0.4375 \\
+    0.375 \\
+    0.1875
+  } = T \M{%
+    0.375 \\
+    0.375 \\
+    0.25
+  } \\
+  \B{s}_9 &= \M{%
+    0.375 \\
+    0.4375 \\
+    0.1875
+  } = T \M{%
+    0.4375 \\
+    0.375 \\
+    0.1875
+  } \\
+  \B{s}_{10} &= \M{%
+    0.40625 \\
+    0.375 \\
+    0.21875
+  } = T \M{%
+    0.375 \\
+    0.4375 \\
+    0.1875
+  } \\
+  \B{s}_{11} &= \M{%
+    0.40625 \\
+    0.40625 \\
+    0.1875
+  } = T \M{%
+    0.40625 \\
+    0.375 \\
+    0.21875
+  } \\
+  \vdots \\
+  \B{s}_{100} &= \M{%
+    0.4 \\
+    0.4 \\
+    0.2
+  } = T \B{s}_{99} \\
+  \B{s}_{101} &= \M{%
+    0.4 \\
+    0.4 \\
+    0.2
+  } = T \M{%
+    0.4 \\
+    0.4 \\
+    0.2
+  } \\
+  \B{s}_{102} &= \M{%
+    0.4 \\
+    0.4 \\
+    0.2
+  } = T \M{%
+    0.4 \\
+    0.4 \\
+    0.2
+  } \\
+  \vdots
+\end{align*}
+
+Curious.  It appears as though our state vectors stabilized and are no longer
+changing as we perform transitions.  If we examine the state vectors past
+$\mathbf{s}_6$, we can see that our vectors were already beginning to approach
+this stable state.  So what does this mean?
+
+Well, we've actually arrived at the PageRank vector for this miniature web.  We
+have $0.4$ in the first slot which means that, during an infinite walk, we have
+a 4 in 10 chance of landing on page 1 after each step.  We see $0.4$ in the
+second slot, which means the same is true for page 2.  Page 3 only has a 2 in
+10 chance of being encountered during the walk.
+
+## Edge Cases
+
+### Dangling Vertices
+
+So are we done?  Did we come up with a perfect approach to this problem?  Not
+quite.  As mentioned before, what if the walker hits a page with no links?
+
+\begin{align*}
+  \M{0 \\ 0 \\ 0} &= \M{%
+  0 & \sfrac{1}{2} & 1 \\
+  0 & 0 & 0 \\
+  0 & \sfrac{1}{2} & 0 \\
+  } \M{1 \\ 0 \\ 0}
+\end{align*}
+
+Right away, we hit a null state.  Any further state transitions will also
+result in the null state.  So how do we fix this?  One approach, which will be
+our approach, is to simply set every value in the "page 1 column" to $1/n$
+where $n$ is the total number of pages in our graph.
+
+\begin{align*}
+  \M{%
+  \sfrac{1}{3} \\
+  \sfrac{1}{3} \\
+  \sfrac{1}{3}
+  } &= \M{%
+  \sfrac{1}{3} & \sfrac{1}{2} & 1 \\
+  \sfrac{1}{3} & 0 & 0 \\
+  \sfrac{1}{3} & \sfrac{1}{2} & 0 \\
+  } \M{%
+  1 \\
+  0 \\
+  0
+  }
+\end{align*}
+
+This makes a bit of intuitive sense.  If we imagine a person browsing the web
+coming to a page with no links, would we say that they're stuck on that page?
+No.  They probably just think of some other page to go to.
+
+### Dangling Zones
+
+What if our walker wanders into some corner of the internet that doesn't
+reference anything outside of itself?
+
+\begin{align*}
+  \M{0 \\ 1 \\ 0 \\ 0} &= \M{%
+  0 & 1 & 0 & 0 \\
+  1 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 1 \\
+  0 & 0 & 1 & 0
+  } \M{1 \\ 0 \\ 0 \\ 0} \\
+  \M{1 \\ 0 \\ 0 \\ 0} &= \M{%
+  0 & 1 & 0 & 0 \\
+  1 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 1 \\
+  0 & 0 & 1 & 0
+  } \M{0 \\ 1 \\ 0 \\ 0} \\
+  \M{0 \\ 1 \\ 0 \\ 0} &= \M{%
+  0 & 1 & 0 & 0 \\
+  1 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 1 \\
+  0 & 0 & 1 & 0
+  } \M{1 \\ 0 \\ 0 \\ 0} \\
+  \M{1 \\ 0 \\ 0 \\ 0} &= \M{%
+  0 & 1 & 0 & 0 \\
+  1 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 1 \\
+  0 & 0 & 1 & 0
+  } \M{0 \\ 1 \\ 0 \\ 0} \\
+  \vdots
+\end{align*}
+
+We can see the state vectors alternating and never stabilizing.  Also, the
+slots in the state vector which correspond to pages 3 and 4 are zero.  However,
+this doesn't reflect the fact that those pages are linked to from somewhere and
+should have a rank greater than zero.  How do we fix this?
+
+Let's consult our intuition again.  What would a person do if they found
+themselves roaming around in a cyclic part of the web?  They would probably
+just choose some other page to visit.  In fact, there's probably always a small
+chance that a person will suddenly get bored, decide to stop clicking links,
+and simply navigate to a random page they think of off the top of their head.
+
+We can represent this idea mathematically:
+
+\begin{align*}
+  G &= (1 - p) T + \frac{p}{n} \mathds{1} \mathds{1}^T
+\end{align*}
+
+This gives us a transition matrix $G$ which has, in effect, been slightly
+redistributed according to a tuning probability $p$.  The tuning probability
+$p$ represents the likelihood that our random walker will decide to suddenly
+jump to any other page on the web without following any links on its current
+page.
+
+Let's calculate a transition matrix $G$ using the $4 \times 4$ transition
+matrix above and a tuning probability of $1/100$:
+
+\begin{align*}
+  G &= (1 - p) T + \frac{p}{n} \mathds{1} \mathds{1}^T \\
+  &= (1 - \sfrac{1}{100}) \begin{bmatrix}
+    0 & 1 & 0 & 0 \\
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0
+  \end{bmatrix} +
+  \frac{\sfrac{1}{100}}{4} \begin{bmatrix}
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1
+  \end{bmatrix} \\
+  &= \frac{99}{100} \begin{bmatrix}
+    0 & 1 & 0 & 0 \\
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0
+  \end{bmatrix} +
+  \frac{1}{400} \begin{bmatrix}
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 1
+  \end{bmatrix} \\
+  &= \begin{bmatrix}
+    0 & \sfrac{99}{100} & 0 & 0 \\
+    \sfrac{99}{100} & 0 & 0 & 0 \\
+    0 & 0 & 0 & \sfrac{99}{100} \\
+    0 & 0 & \sfrac{99}{100} & 0
+  \end{bmatrix} +
+  \begin{bmatrix}
+    \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} \\
+    \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} \\
+    \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} \\
+    \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400}
+  \end{bmatrix} \\
+  &= \begin{bmatrix}
+    \sfrac{1}{400} & \sfrac{397}{400} & \sfrac{1}{400} & \sfrac{1}{400} \\
+    \sfrac{397}{400} & \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} \\
+    \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{397}{400} \\
+    \sfrac{1}{400} & \sfrac{1}{400} & \sfrac{397}{400} & \sfrac{1}{400}
+  \end{bmatrix}
+\end{align*}
+
+We can see that every page now has a slight probability of being visited even
+if there were no links to it in the original graph.  Also, every column in the
+matrix still sums to 1 and correctly represents a probability distribution.
+Using this transition matrix, the walker will eventually navigate to every
+page.
+
+## Eigenvectors and Eigenvalues
+
+In linear algebra, we say that a vector $\mathbf{x}$ is an **eigenvector** of a
+matrix $A$ if the following equation holds true:
+
+\begin{align*}
+  A \B x &= \lambda \B x && \text{where $\lambda$ is some constant value}
+\end{align*}
+
+This says that, after transforming the vector $\mathbf{x}$ using $A$, the result
+is simply a scalar multiple of $\mathbf{x}$.  That multiple, $\lambda$, is the
+**eigenvalue** which corresponds to the eigenvector $\mathbf{x}$.
+
+Does this remind us of anything?  What if the matrix $A$ was replaced with one
+of our transition matrices $T$?  Also, what if the vector $\mathbf{x}$ was
+replaced with one of our stable state vectors?  Would the above equation still
+hold true?  Let's see:
+
+\begin{align*}
+  T \B s &= \M{%
+    0 & 0.5 & 1 \\
+    1 & 0 & 0 \\
+    0 & 0.5 & 0
+  } \M{.4 \\ .4 \\ .2}
+  = \M{.4 \\ .4 \\ .2} = \B s \\
+  \implies T \B s &= \B s
+\end{align*}
+
+We can see that our state vector $\mathbf{s}$ is indeed an eigenvector of $T$
+with an eigenvalue of $1$.
+
+We can now define the problem of finding the pagerank vector entirely in terms
+of linear algebra.  We say that the pagerank vector of the web is the
+eigenvector of the web's transition matrix with eigenvalue 1^[Actually, it is
+this eigenvector scaled by the inverse of the sum of its terms.  This scaling
+would guarantee that the vector represents a probability distribution and that
+its terms sum to 1.].
