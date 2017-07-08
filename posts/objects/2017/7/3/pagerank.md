@@ -171,7 +171,7 @@ probability of being clicked as seen in figure 5:
 
 To illustrate this idea further, let's annotate figure 2 with some
 probabilities.  In figure 6, we see from these annotations that each link from
-page 2 has a 1 in 2 chance of being clicked.  The link from page 1 has a 100%
+page 2 has a $1/2$ chance of being clicked.  The link from page 1 has a 100%
 chance of being clicked as does the link from page 3:
 
 <figure>
