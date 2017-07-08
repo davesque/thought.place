@@ -102,7 +102,7 @@ def convert(input, *args):
     """
     Converts the given string input with pandoc and the given arguments.
     """
-    return run_with_checks('pandoc', args, input=input.encode('utf-8'))
+    return run_with_checks('pandoc', ('-S',) + args, input=input.encode('utf-8'))
 
 
 TEX_ENVS = (

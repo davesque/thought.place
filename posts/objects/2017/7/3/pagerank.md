@@ -205,57 +205,100 @@ in terms of the **adjacency matrix** of a graph as well as the graph's **degree
 matrix**.
 
 A graph's adjacency matrix $A$ is defined as follows:
-$$
+
+\begin{equation*}
 A_{ij} = \begin{cases}
   1\ \text{if vertex $i$ links to vertex $j$} \\
   0\ \text{otherwise}
 \end{cases}
-$$
+\end{equation*}
+
 This gives us the following adjacency matrix for the graph seen in figure 6:
-$$
+
+\begin{equation*}
 A = \begin{bmatrix}
   0 & 1 & 0 \\
   1 & 0 & 1 \\
   1 & 0 & 0
 \end{bmatrix}
-$$
+\end{equation*}
+
 Now for the degree matrix $D$.  It's defined as follows:
-$$
+
+\begin{equation*}
 D_{ij} = \begin{cases}
-  \text{# of links leaving vertex $i$ if $i = j$} \\
+  \text{\# of links leaving vertex $i$ if $i = j$} \\
   0\ \text{otherwise}
 \end{cases}
-$$
+\end{equation*}
+
 For our graph, that looks like this:
-$$
-D = \begin{bmatrix}
+
+\begin{equation*}
+D = \M{%
   1 & 0 & 0 \\
   0 & 2 & 0 \\
   0 & 0 & 1
-\end{bmatrix}
-$$
+}
+\end{equation*}
+
 After all this, we can finally define our transition matrix as follows:
-$$
+
 \begin{align*}
   T &= A^T D^{-1} \\
-    &= \begin{bmatrix}
+    &= \M{%
       0 & 1 & 1 \\
       1 & 0 & 0 \\
       0 & 1 & 0
-    \end{bmatrix} \begin{bmatrix}
+    } \M{%
       1 & 0 & 0 \\
       0 & \sfrac{1}{2} & 0 \\
       0 & 0 & 1
-    \end{bmatrix} \\
-    &= \begin{bmatrix}
+    } \\
+    &= \M{%
       0 & \sfrac{1}{2} & 1 \\
       1 & 0 & 0 \\
       0 & \sfrac{1}{2} & 0
-    \end{bmatrix}
+    }
 \end{align*}
-$$
+
 What are we seeing here?  In column 1 of $T$, we see 1 in the second row and
-0's in the other rows.  This means there's a 100\% probability of moving to
-page 2 from page 1.  Therefore, column 1 corresponds to the probabilities of
+0's in the other rows.  This means there's a 100% probability of moving to page
+2 from page 1.  Therefore, column 1 corresponds to the probabilities of
 transitioning from page 1 to any other page.  Likewise, column 2 corresponds to
 the transition probabilites for page 2 and so on.
+
+Great!  Now, how do we actually *use* the state machine?  How do we actually
+*run* it?  The process is detailed below:
+
+\begin{align}
+  \text{next state} &= T \times \text{previous or initial state} \label{eq:transition-informal} \\
+  \B{s}_n &= T \B{s}_{n - 1} \label{eq:transition-formal} \\
+  \B{s}_1 &= T \B{s}_0 \\
+  \implies \M{0 \\ 1 \\ 0} &= \M{%
+    0 & \sfrac{1}{2} & 1 \\
+    1 & 0 & 0 \\
+    0 & \sfrac{1}{2} & 0
+  } \M{1 \\ 0 \\ 0} \label{eq:transition-actual}
+\end{align}
+
+In equations 1 and 2 above, the transition matrix $T$ multiplies with some
+state vector to perform the action of transitioning to the next state.
+Concretely, in equation 4, we begin our random walker on page 1 (state 1) by
+choosing an initial state vector with 1 in its first slot as seen on the
+right-hand side.  After the matrix-vector multiplication, we see that the 1 has
+moved into the second slot on the left-side.  This means that our walker ended
+up on page 2 after one "random" step^[In this case, it was not exactly random
+since page 1 links to page 2 and nothing else.].  Let's see what happens if we
+continue this process.  We now have a new state vector $\mathbf{s}_1$.  We feed
+$\mathbf{s}_1$ back into the transition equation to get the next state vector
+$\mathbf{s}_2$:
+
+\begin{align*}
+  \B{s}_2 &= T \B{s}_1 \\
+  \implies \M{\sfrac{1}{2} \\ 0 \\ \sfrac{1}{2}} &= \M{%
+    0 & \sfrac{1}{2} & 1 \\
+    1 & 0 & 0 \\
+    0 & \sfrac{1}{2} & 0
+  } \M{0 \\ 1 \\ 0}
+\end{align*}

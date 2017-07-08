@@ -1,7 +1,25 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{xfrac}
 \usepackage{anyfontsize}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\B}[1]{\mathbf{#1}}
+\newcommand{\T}[1]{\textbf{#1}}
+\newcommand{\dotp}[2]{\B{#1}^T \B{#2}}
+\newcommand{\outp}[2]{\B{#1} \B{#2}^T}
+\newcommand{\M}[1]{\begin{bmatrix*}[r]#1\end{bmatrix*}}
+\newcommand{\VM}[1]{\begin{vmatrix*}[r]#1\end{vmatrix*}}
 
 \begin{document}
 \pagestyle{empty}
