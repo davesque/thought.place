@@ -8,11 +8,11 @@ Imagine a robot which starts on some random page on the web &mdash; we'll call
 it page 1.  The robot clicks some random link on page 1 and is led to page 2.
 On page 2, the robot clicks another random link and is led to page 3 and so on.
 Let's assume that, if this process continues on forever, the robot would
-eventually visit every page on the web^[Attentive readers may realize that this
+eventually visit every page on the web.^[Attentive readers may realize that this
 is not entirely true.  For instance, if the robot navigated to a page with no
 links, it would get stuck.  For now, we assume the robot *will* visit every
 page and that there are no strange circumstances that would cause the robot to
-get stuck in a certain pattern.].  We can imagine that the robot might find
+get stuck in a certain pattern.]  We can imagine that the robot might find
 itself revisiting certain pages that are referred to often by others.  These
 pages which are more commonly encountered are the important pages on the
 internet.  Such pages could be ones like *wikipedia.com* or *nytimes.com*.
@@ -288,8 +288,8 @@ Concretely, in equation 4, we begin our random walker on page 1 (state 1) by
 choosing an initial state vector with 1 in its first slot as seen on the
 right-hand side.  After the matrix-vector multiplication, we see that the 1 has
 moved into the second slot on the left-side.  This means that our walker ended
-up on page 2 after one "random" step^[In this case, it was not exactly random
-since page 1 links to page 2 and nothing else.].  Let's see what happens if we
+up on page 2 after one "random" step.^[In this case, it was not exactly random
+since page 1 links to page 2 and nothing else.]  Let's see what happens if we
 continue this process.  We now have a new state vector $\mathbf{s}_1$.  We feed
 $\mathbf{s}_1$ back into the transition equation to get the next state vector
 $\mathbf{s}_2$:
@@ -616,9 +616,9 @@ hold true?  Let's see:
 We can see that our state vector $\mathbf{s}$ is indeed an eigenvector of $T$
 with an eigenvalue of $1$.
 
-We can now define the problem of finding the pagerank vector entirely in terms
-of linear algebra.  We say that the pagerank vector of the web is the
-eigenvector of the web's transition matrix with eigenvalue 1^[Actually, it is
-this eigenvector scaled by the inverse of the sum of its terms.  This scaling
-would guarantee that the vector represents a probability distribution and that
-its terms sum to 1.].
+We can now define the problem of finding the rank vector concisely in terms of
+linear algebra.  We say that the rank vector of the web is the eigenvector of
+the web's transition matrix with eigenvalue 1.^[Actually, it is this eigenvector
+scaled by the inverse of the sum of its terms.  This scaling would guarantee
+that the vector represents a probability distribution and that its terms sum to
+1.]
