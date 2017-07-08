@@ -63,7 +63,7 @@ def run_with_checks(command, args, input=None):
     return out.decode('utf-8')
 
 
-def tex_to_svg(template_name, context):
+def tex_to_svg(template_name, context, crop=False):
     tex_content = render_to_string(
         template_name,
         context=context,
@@ -83,9 +83,14 @@ def tex_to_svg(template_name, context):
         )
 
         pdf_file = os.path.join(tmp_dir, hsh + '.pdf')
+        pdf_cropped_file = os.path.join(tmp_dir, hsh + '-cropped.pdf')
         svg_file = os.path.join(tmp_dir, hsh + '.svg')
 
-        run_with_checks('pdf2svg', (pdf_file, svg_file))
+        if crop:
+            run_with_checks('pdfcrop', (pdf_file, pdf_cropped_file))
+            run_with_checks('pdf2svg', (pdf_cropped_file, svg_file))
+        else:
+            run_with_checks('pdf2svg', (pdf_file, svg_file))
 
         with open(svg_file, 'r') as f:
             static_storage.save(path, f)
@@ -100,6 +105,15 @@ def convert(input, *args):
     return run_with_checks('pandoc', args, input=input.encode('utf-8'))
 
 
+TEX_ENVS = (
+    r'\begin{tikzpicture}',
+    r'\begin{equation*}',
+    r'\begin{equation}',
+    r'\begin{align*}',
+    r'\begin{align}',
+)
+
+
 def tex_filter(key, value, format, _):
     """
     A pandoc filter which converts block of raw latex into standalone svg
@@ -110,17 +124,24 @@ def tex_filter(key, value, format, _):
 
     fmt, content = value
 
-    if fmt != 'latex' or r'\begin{tikzpicture}' not in content:
+    if fmt != 'latex':
         return
 
-    url = tex_to_svg('standalone.tex', {'content': content})
+    if not any(content.startswith(env) for env in TEX_ENVS):
+        return
+
+    if content.startswith(r'\begin{tikzpicture}'):
+        url = tex_to_svg('standalone.tex', {'content': content})
+    else:
+        url = tex_to_svg('article.tex', {'content': content}, crop=True)
+
     img = '<img class="uk-align-center" src="{}"/>'.format(url)
 
     return RawBlock('html', img)
 
 
 def convert_with_tex(content):
-    json = convert(content, '--from', 'markdown', '--to', 'json', '--mathjax')
+    json = convert(content, '--from', 'markdown', '--to', 'json', '--katex')
 
     altered = applyJSONFilters([tex_filter], json)
 

@@ -25,31 +25,6 @@
   <!-- UIkit JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit-icons.min.js"></script>
-
-	<!-- MathJax -->
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      CommonHTML: {
-        mtextFontInherit: true
-      }
-    });
-
-    MathJax.Hub.Register.StartupHook("TeX Jax Ready", function () {
-      var MML = MathJax.ElementJax.mml,
-          TEX = MathJax.InputJax.TeX;
-
-      TEX.Definitions.macros.sfrac = "myBevelFraction";
-
-      TEX.Parse.Augment({
-        myBevelFraction: function (name) {
-          var num = this.ParseArg(name),
-              den = this.ParseArg(name);
-          this.Push(MML.mfrac(num,den).With({bevelled: true}));
-        }
-      });
-    });
-  </script>
-  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 {% url 'about' as about_url %}
