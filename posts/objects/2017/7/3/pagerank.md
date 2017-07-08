@@ -2,33 +2,34 @@
 title: Towards an Understanding of Search Engines
 ---
 
-## Intuition
+## Developing an Intuition
 
-Imagine a robot which starts on some random page on the web &mdash; we'll call
-it page 1.  The robot clicks some random link on page 1 and is led to page 2.
-On page 2, the robot clicks another random link and is led to page 3 and so on.
-Let's assume that, if this process continues on forever, the robot would
-eventually visit every page on the web.^[Attentive readers may realize that this
-is not entirely true.  For instance, if the robot navigated to a page with no
-links, it would get stuck.  For now, we assume the robot *will* visit every
-page and that there are no strange circumstances that would cause the robot to
-get stuck in a certain pattern.]  We can imagine that the robot might find
-itself revisiting certain pages that are referred to often by others.  These
-pages which are more commonly encountered are the important pages on the
-internet.  Such pages could be ones like *wikipedia.com* or *nytimes.com*.
+Imagine a robot which starts on some random page on the web.  The robot clicks
+a random link on this page and is led to a second page.  On this second page,
+the robot clicks another random link and is led to a third page and so on.  We
+could imagine that, if this process continued on forever, the robot might
+eventually visit every page on the web.^[Attentive readers may realize that
+this is not entirely true.  For instance, if the robot navigated to a page with
+no links, it would get stuck.  For now, let's assume the robot *will* visit
+every page and that it won't run into anything that would cause it to get stuck
+in a certain pattern.]  During this journey, our robot would probably find
+itself revisiting certain pages again and again.  After all, the web has a lot
+of popular sites that everyone visits and that are linked to from many places.
+Such sites could be ones like *wikipedia.com* or *nytimes.com*.  These are the
+important pages on the web.
 
-This sense of importance that we've just described more or less characterizes
-the way that search engines rank and index web pages on the internet.  We can
+This sense of importance that we've just described generally characterizes the
+way that search engines rank and index web pages on the internet.  We can
 describe the process in a few steps:
 
 * We begin on some random page.
 * We take an infinite, random walk of the web and record the frequencies with
   which we encounter every page that we come across.
-* We use these frequencies to determine the probability of encountering each
+* We use these frequencies to figure out the likelihood of ending up at each
   page after clicking a link during any step of our walk.
-* We consider these probabilities to be the ranks of the pages we encountered
-  (i.e. pages with higher probabilities of being encountered are considered to
-  be more important).
+* We consider these likelihoods to be the ranks of the pages we found (i.e.
+  pages with higher likelihoods of being visited are considered to be more
+  important).
 
 If the web looked like figure 1, could we guess the probability that we would
 find ourselves on page 1 during any step of an infinite walk?
@@ -120,24 +121,34 @@ but in a certain part of the web as seen in figure 4)?
   <figcaption>Figure 4: A web with isolated zones.</figcaption>
 </figure>
 
-To answer all these questions, we need to find a more systematic approach to
-this problem.
+To answer all these questions, we need to find a more systematic way to talk
+about this problem.
 
-## Algorithm
+## A More Systematic Approach
 
 ### Overview
 
-More abstractly, the process of doing our infinite walk like we described above
-can be represented with a state machine.  Each page on the web is one state in
-the machine and all the links between pages are the transitions between those
-states.
+First, let's introduce some basic terminology.  During the rest of this
+article, we're going to use two related concepts in our discussion: the
+concepts of a **state machine** and a **graph**.  For our purposes, these two
+terms are equivalent.  A **state machines** is composed of a number of states
+in addition to a number transitions between those states.  Likewise, a
+**graph** is composed of a number of vertices and a number of edges.  We can
+think of the web as both a state machine *and* a graph.  It is a state machine
+in the sense that each page is a possible state and the links between pages are
+the possible transitions between states.  It is also a graph in the sense that
+each page is a vertex and all the links between pages are the edges.  If this
+terminology is confusing, just remember: a page $=$ a state $=$ a vertex *and*
+a link $=$ a transition $=$ an edge.
 
-Let's say that each link has an equal probability of being taken by our random
-walker robot during one step of its walk.  This means that, if our walker is on
-a certain page (our machine is in a certain state), each link on that page has
-an equal chance of being clicked by our walker (each state transition has an
-equal chance of taking place).  This gives the following equation for a given
-link's probability of being clicked:
+Now that we've made this clear, let's think of the web as a state machine.
+Think back to our random walker.  When our walker comes to a new page (when it
+transitions into a new state), it has to randomly choose which link to click
+(choose the next state into which it should transition).
+
+Let's say that each link has an equal probability of being clicked.  This gives
+us the following equation for the probability of clicking a link during any
+step of our walk:
 
 \begin{align*}
   \text{probability of clicking link $x$} = \frac{1}{\text{total \# of links on the page where $x$ is found}}
@@ -169,10 +180,12 @@ probability of being clicked as seen in figure 5:
   <figcaption>Figure 5: State machine with transition probabilities.</figcaption>
 </figure>
 
-To illustrate this idea further, let's annotate figure 2 with some
-probabilities.  In figure 6, we see from these annotations that each link from
-page 2 has a $1/2$ chance of being clicked.  The link from page 1 has a 100%
-chance of being clicked as does the link from page 3:
+The total number of links on page 1 is 3 so the probability of clicking any one
+of those links is $1/3$.  To illustrate this idea further, let's annotate
+figure 2 with some probabilities.  In figure 6, we see from these annotations
+that each link from page 2 has probability $1/2$ of being clicked.  The link
+from page 1 has probability 1 (a 100% chance) of being clicked as does the link
+from page 3:
 
 <figure>
   \begin{tikzpicture}[->,>=latex',scale=1.5,transform shape]
@@ -193,16 +206,22 @@ chance of being clicked as does the link from page 3:
 </figure>
 
 Since we're trying to be systematic, we need a way to represent this process
-mathematically.  As it turns out, there is a way to do this using linear
-algebra.
+mathematically.  As it turns out, there is a way to do this using vectors and
+matrices.
 
-### Linear Algebraic Approach
+### Using Vectors and Matrices
+
+From here on out, we're going to assume the reader has some familiarity with
+a number of concepts from linear algebra including the concepts of a **vector**
+and a **matrix**.  Khan Academy has [a good
+course](https://www.khanacademy.org/math/linear-algebra) for anyone interested
+in doing some learning on these subjects.
 
 In linear algebra, we represent probabilistic state machines using **transition
-matrices**.  A **transition matrix** is a matrix which encodes the vertices and
-edges in a graph, giving a probability or weight to each edge.  It is defined
-in terms of the **adjacency matrix** of a graph as well as the graph's **degree
-matrix**.
+matrices**.  A **transition matrix** is a matrix which represents the vertices
+and edges in a graph, giving a probability or weight to each edge.  It is
+defined in terms of the **adjacency matrix** of a graph as well as the graph's
+**degree matrix**.
 
 A graph's adjacency matrix $A$ is defined as follows:
 
@@ -428,11 +447,12 @@ changing as we perform transitions.  If we examine the state vectors past
 $\mathbf{s}_6$, we can see that our vectors were already beginning to approach
 this stable state.  So what does this mean?
 
-Well, we've actually arrived at the PageRank vector for this miniature web.  We
-have $0.4$ in the first slot which means that, during an infinite walk, we have
-a 4 in 10 chance of landing on page 1 after each step.  We see $0.4$ in the
-second slot, which means the same is true for page 2.  Page 3 only has a 2 in
-10 chance of being encountered during the walk.
+Well, we've actually ended up with a vector which "ranks" the pages in our
+miniature web.  The first element in the vector is $0.4$ which means that,
+during an infinite walk, we have a 4 in 10 chance of landing on page 1 after
+each step.  The second element is $0.4$ which means that the same is true for
+page 2.  Page 3 only has a 2 in 10 chance of being encountered during each step
+of the walk.
 
 ## Edge Cases
 

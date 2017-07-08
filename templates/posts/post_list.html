@@ -5,7 +5,7 @@
 <section class="{% if not forloop.last %}uk-margin-medium-bottom{% endif %}">
   <hgroup>
     <h2 class="uk-margin-small-bottom"><a class="uk-link-text" href="{{ obj.url }}">{{ obj.title }}</a></h2>
-    <h3 class="uk-margin-small-top">{{ obj.published|date:'Y.n.j' }}</h3>
+    <div class="uk-margin-small-top">{{ obj.published|date:'Y/n/j' }}</div>
   </hgroup>
 
   <p>{{ obj.body|truncatewords_html:30|striptags }}</p>

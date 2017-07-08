@@ -4,7 +4,11 @@
 {% block content %}
 {% cache ONE_YEAR_TIMEOUT obj view.request.path %}
 <article class="uk-article uk-text-justify uk-margin-remove-bottom">
-  <h1 class="uk-heading-primary">{{ obj.title }}</h1>
+  <h1 class="uk-heading-primary uk-margin-small-bottom">{{ obj.title }}</h1>
+  <div class="uk-text-center uk-margin-sm-med-bottom">
+    {#David Sanders{% if object.published %}&mdash; {{ obj.published|date:'Y/n/j' }}{% endif %}#}
+    David Sanders &mdash; 2017/7/8
+  </div>
 
   <section>
     {{ obj.body|safe }}
@@ -60,7 +64,7 @@
 {% cache ONE_YEAR_TIMEOUT obj view.request.path 'comments' %}
 {% for c in comments %}
   <section class="uk-margin-medium-bottom">
-    <h2 class="uk-h3 uk-margin-remove-bottom {% if c.moderator %}moderator{% endif %}">
+    <h2 class="uk-h4 uk-margin-remove-bottom {% if c.moderator %}moderator{% endif %}">
       {% if c.display_website %}
       <a href="{{ c.display_website }}">{{ c.display_name }}</a> says:
       {% else %}
@@ -69,7 +73,7 @@
     </h2>
 
     <p class="uk-text-small uk-margin-small-top">
-    <em>Comment #{{ forloop.counter }} ({{ c.created_at|date:'Y.n.j \a\t f a e' }})</em>
+    <em>Comment #{{ forloop.counter }} ({{ c.created_at|date:'Y/n/j f a e' }})</em>
     </p>
 
     {% if c.deleted %}[deleted]{% else %}{{ c.comment }}{% endif %}

@@ -19,6 +19,7 @@ $global-xxlarge-font-size: 1.8rem;
 $global-xlarge-font-size: 1.7rem;
 $global-large-font-size: 1.5rem;
 $global-medium-font-size: 1.3rem;
+$global-sm-med-font-size: 1.15rem;
 $global-font-size: 17px;
 $global-small-font-size: 0.875rem;
 
@@ -33,12 +34,14 @@ $heading-primary-font-size-m: $global-xlarge-font-size;
 $heading-primary-font-size: $heading-primary-font-size-m;
 $base-h2-font-size: $global-large-font-size;
 $base-h3-font-size: $global-medium-font-size;
+$base-h4-font-size: $global-sm-med-font-size;
 
 $heading-primary-line-height: 1.1;
 $heading-primary-line-height-m: 1.1;
 $base-h1-line-height: 1;
 $base-h2-line-height: 1;
 $base-h3-line-height: 1;
+$base-h4-line-height: 1;
 $base-pre-line-height: 1.3;
 
 @function get-bg-color($lightness, $saturation: 100%) {
@@ -125,7 +128,7 @@ code {
 }
 
 @mixin hook-article {
-  margin-top: $margin-medium-margin;
+  margin-top: $margin-medium-margin * 1.2;
   margin-bottom: $margin-medium-margin;
 }
 
@@ -137,6 +140,10 @@ code {
   margin-bottom: $base-margin-vertical * 1.5;
   text-align: center;
 }
+
+@mixin hook-margin-misc {
+  .uk-margin-sm-med-bottom { margin-bottom: $base-margin-vertical * 1.5; }
+};
 
 @mixin tp-hook-button {
   font-family: $base-button-font-family;
