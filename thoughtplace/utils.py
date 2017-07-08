@@ -131,9 +131,9 @@ def tex_filter(key, value, format, _):
         return
 
     if content.startswith(r'\begin{tikzpicture}'):
-        url = tex_to_svg('standalone.tex', {'content': content})
+        url = tex_to_svg('figure.tex', {'content': content})
     else:
-        url = tex_to_svg('article.tex', {'content': content}, crop=True)
+        url = tex_to_svg('math.tex', {'content': content}, crop=True)
 
     img = '<img class="uk-align-center" src="{}"/>'.format(url)
 
