@@ -24,8 +24,7 @@ PDF2SVG_FILE=$(find . -maxdepth 4 -type f -name 'pdf2svg' | head -1)
 PDF2SVG_DIR=$(dirname "${PDF2SVG_FILE:2}")
 
 echo "---"
-echo "$PDFLATEX_FILE"
-echo "$PDFLATEX_DIR"
+find .texlive
 echo "---"
 echo "$PANDOC_FILE"
 echo "$PANDOC_DIR"
