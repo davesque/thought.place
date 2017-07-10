@@ -14,7 +14,7 @@ MANAGE_FILE=${MANAGE_FILE:2}
 echo "-----> Compressing static files"
 python $MANAGE_FILE compress 2>&1 | indent
 
-PDFLATEX_FILE=$(find .texlive -type f -name 'pdflatex' | head -1)
+PDFLATEX_FILE=$(find .texlive -name 'pdflatex' | head -1)
 PDFLATEX_DIR=$(dirname "${PDFLATEX_FILE:2}")
 
 PANDOC_FILE=$(find . -type f -name 'pandoc' | head -1)
