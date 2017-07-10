@@ -20,7 +20,8 @@ PANDOC_FILE=${PANDOC_FILE:2}
 PDF2SVG_FILE=$(find . -maxdepth 3 -type f -name 'pdf2svg' | head -1)
 PDF2SVG_FILE=${PDF2SVG_FILE:2}
 
-echo "$(pwd)"
+pwd
+find /
 echo "$PANDOC_FILE"
 echo "$PDF2SVG_FILE"
 
