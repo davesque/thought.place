@@ -15,13 +15,8 @@ echo "-----> Compressing static files"
 python $MANAGE_FILE compress 2>&1 | indent
 
 PANDOC_FILE=$(find . -maxdepth 3 -type f -name 'pandoc' | head -1)
-PANDOC_FILE=${PANDOC_FILE:2}
-
 PDF2SVG_FILE=$(find . -maxdepth 3 -type f -name 'pdf2svg' | head -1)
-PDF2SVG_FILE=${PDF2SVG_FILE:2}
 
-pwd
-find .
 echo "$PANDOC_FILE"
 echo "$PDF2SVG_FILE"
 
