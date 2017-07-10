@@ -1,4 +1,4 @@
-# thought.place
+# thought.place 
 
 A simple blog.
 
