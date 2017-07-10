@@ -14,9 +14,21 @@ MANAGE_FILE=${MANAGE_FILE:2}
 echo "-----> Compressing static files"
 python $MANAGE_FILE compress 2>&1 | indent
 
-echo "$HOME"
+PANDOC_FILE=$(find . -maxdepth 4 -type f -name 'pandoc' | head -1)
+PANDOC_DIR=$(dirname "$PANDOC_FILE")
+
+PDF2SVG_FILE=$(find . -maxdepth 4 -type f -name 'pdf2svg' | head -1)
+PDF2SVG_DIR=$(dirname "$PDF2SVG_FILE")
+
+echo "---"
+echo "$PANDOC_FILE"
+echo "$PANDOC_DIR"
+echo "---"
+echo "$PDF2SVG_FILE"
+echo "$PDF2SVG_DIR"
+echo "---"
 
 echo "-----> Loading articles"
-PATH="$PATH" python $MANAGE_FILE loadarticles 2>&1 | indent
+PATH="$PANDOC_DIR:$PDF2SVG_DIR:$PATH" python $MANAGE_FILE loadarticles 2>&1 | indent
 
 echo
