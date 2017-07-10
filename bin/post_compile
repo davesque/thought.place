@@ -14,4 +14,7 @@ MANAGE_FILE=${MANAGE_FILE:2}
 echo "-----> Compressing static files"
 python $MANAGE_FILE compress 2>&1 | indent
 
+echo "-----> Loading articles"
+python $MANAGE_FILE loadarticles 2>&1 | indent
+
 echo
