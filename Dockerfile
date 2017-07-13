@@ -1,27 +1,33 @@
 FROM python:3
 
 # Install apt packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-                texlive \
-                pdf2svg \
-        && rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+
+RUN apt-get install -y pdf2svg
+RUN apt-get install -y texlive
+#RUN apt-get install -y texlive-latex-extra
+#RUN apt-get install -y texlive-fonts-extra
+
+# Apt cleanup
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
 # Install pandoc
-RUN curl -L -o /pandoc.deb \
-        "https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb"
+ARG PANDOC_URL=https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
+RUN curl -L -o /pandoc.deb $PANDOC_URL
 RUN dpkg -i /pandoc.deb
 RUN rm /pandoc.deb
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY requirements /usr/src/app/requirements
-COPY requirements.txt /usr/src/app/
+COPY requirements ./requirements
+COPY requirements.txt ./
 
 # Install pip packages
-RUN pip install --no-cache-dir -r requirements.txt
+ARG REQUIREMENTS_FILE=requirements.txt
+RUN pip install --no-cache-dir -r $REQUIREMENTS_FILE
 
-COPY . /usr/src/app
+COPY . .
 
 # Generate static files
 RUN python manage.py compress
