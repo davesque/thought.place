@@ -12,9 +12,6 @@ RUN curl -L -o /pandoc.deb \
 RUN dpkg -i /pandoc.deb
 RUN rm /pandoc.deb
 
-# Heroku requires that we user a non-root user
-RUN useradd -m localuser
-
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
@@ -26,6 +23,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
 
+# Heroku requires that we user a non-root user
+RUN useradd -m localuser
 RUN chown -R localuser /usr/src/app
 USER localuser
 
