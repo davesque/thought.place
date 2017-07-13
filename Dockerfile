@@ -23,13 +23,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
 
-# Heroku requires that we user a non-root user
-RUN useradd -m localuser
-RUN chown -R localuser /usr/src/app
-USER localuser
-
 # Generate static files
 RUN python manage.py compress
 RUN python manage.py loadarticles
+
+# Heroku requires that we user a non-root user
+RUN useradd -m localuser
+USER localuser
 
 CMD gunicorn thoughtplace.wsgi -b 0.0.0.0:$PORT --log-file -
