@@ -26,7 +26,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
 
-RUN chown -R localuser /usr/local /usr/src/app
+RUN chown -R localuser /usr/src/app
 USER localuser
 
 # Generate static files
