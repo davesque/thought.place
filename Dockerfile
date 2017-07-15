@@ -33,7 +33,7 @@ COPY . .
 RUN python manage.py compress
 RUN python manage.py loadarticles
 
-# Heroku requires that we user a non-root user
+# Heroku requires that we use a non-root user
 RUN useradd -m localuser
 USER localuser
 
