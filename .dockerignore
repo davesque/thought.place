@@ -16,3 +16,5 @@ runtime.txt
 
 */settings_local.py
 */urls_local.py
+
+collected_static/*

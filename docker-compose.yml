@@ -2,10 +2,13 @@ version: '3'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      args: ['REMOVE_TEXLIVE=false']
 
-    ports: ['8000:8000']
+    ports: ['$PORT:$PORT']
     env_file: .env
+
     depends_on: [db]
     volumes: ['.:/usr/src/app']
 
