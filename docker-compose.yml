@@ -12,7 +12,7 @@ services:
     stdin_open: true
     tty: true
 
-    command: gunicorn $SITE_APP_NAME.wsgi -b 0.0.0.0:$PORT --log-file - -c debug.ini
+    command: -c debug.ini
 
   db:
     image: postgres:latest
