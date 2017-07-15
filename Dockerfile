@@ -1,5 +1,14 @@
 FROM python:3
 
+# Install su-exec
+ADD https://github.com/davesque/su-exec/archive/v0.2.tar.gz /tmp/su-exec
+RUN \
+  cd /tmp/su-exec/su-exec-0.2 \
+  && make \
+  && mv su-exec /usr/bin \
+  && cd \
+  && rm -rf /tmp/su-exec
+
 # Install apt packages
 RUN apt-get update
 
@@ -35,6 +44,5 @@ RUN python manage.py loadarticles
 
 # Heroku requires that we user a non-root user
 RUN useradd -m localuser
-USER localuser
 
-CMD gunicorn thoughtplace.wsgi -b 0.0.0.0:$PORT --log-file -
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

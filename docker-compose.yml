@@ -1,16 +1,18 @@
 version: '3'
+
 services:
   web:
-    restart: always
     build: .
-    ports:
-      - "8000:8000"
+
+    ports: ["8000:8000"]
     env_file: .env
-    depends_on:
-      - db
-    volumes:
-      - .:/usr/src/app
-      - ~:/host-home
-    command: gunicorn thoughtplace.wsgi -c /host-home/debug.ini -b 0.0.0.0:8000 --log-file -
+    depends_on: [db]
+    volumes: [".:/usr/src/app"]
+
+    stdin_open: true
+    tty: true
+
+    command: -c debug.ini
+
   db:
     image: postgres:latest
