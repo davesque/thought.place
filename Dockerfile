@@ -37,5 +37,4 @@ RUN python manage.py loadarticles
 RUN useradd -m localuser
 USER localuser
 
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
-CMD []
+CMD ["/usr/src/app/entrypoint.sh"]

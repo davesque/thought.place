@@ -4,15 +4,15 @@ services:
   web:
     build: .
 
-    ports: ["8000:8000"]
+    ports: ['8000:8000']
     env_file: .env
     depends_on: [db]
-    volumes: [".:/usr/src/app"]
+    volumes: ['.:/usr/src/app']
 
     stdin_open: true
     tty: true
 
-    command: -c debug.ini
+    command: ['/usr/src/app/entrypoint.sh', '-c', 'debug.ini']
 
   db:
     image: postgres:latest
