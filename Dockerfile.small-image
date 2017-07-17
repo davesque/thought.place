@@ -1,15 +1,5 @@
 FROM python:3
 
-# Install latex packages
-RUN apt-get update \
-  && apt-get install -y \
-    pdf2svg \
-    texlive \
-    texlive-latex-extra \
-    texlive-fonts-extra \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
-
 # Install pandoc
 ARG PANDOC_URL=https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
 RUN \
@@ -28,9 +18,27 @@ RUN pip install --no-cache-dir -r $REQUIREMENTS_FILE
 
 COPY . .
 
-# Generate static files
+# Generate django compressor static files
 RUN python manage.py compress
-RUN python manage.py loadarticles
+
+# Generate latex static files
+ARG REMOVE_TEXLIVE=true
+RUN apt-get update \
+  && apt-get install -y \
+    pdf2svg \
+    texlive \
+    texlive-latex-extra \
+    texlive-fonts-extra \
+  && python manage.py loadarticles \
+  && if $REMOVE_TEXLIVE; then \
+    apt-get purge --auto-remove -y \
+      pdf2svg \
+      texlive \
+      texlive-latex-extra \
+      texlive-fonts-extra \
+  ;fi \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Heroku containers are not run with root privileges.  We add and enforce a
 # non-root user here to ensure that our site works under these conditions.  The
