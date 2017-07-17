@@ -51,5 +51,5 @@ jobs:
           name: Push application image
           command: |
             docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
-						docker tag app registry.heroku.com/$HEROKU_APP_NAME/web
-						docker push registry.heroku.com/$HEROKU_APP_NAME/web
+            docker tag app registry.heroku.com/$HEROKU_APP_NAME/web
+            docker push registry.heroku.com/$HEROKU_APP_NAME/web
