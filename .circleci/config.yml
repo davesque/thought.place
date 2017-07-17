@@ -7,19 +7,18 @@ jobs:
     working_directory: /app
 
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker:17.06.0-ce-git
 
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --no-cache \
-              py-pip=9.0.0-r1
-            pip install \
-              docker-compose==1.12.0 \
-              awscli==1.11.76
+      #- run:
+      #    name: Install dependencies
+      #    command: |
+      #      apk add --no-cache \
+      #        py-pip=9.0.0-r1
+      #      pip install \
+      #        docker-compose==1.12.0 \
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -43,13 +42,24 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
-      - run:
-          name: Run tests
-          command: |
-            docker-compose -f ./docker-compose.test.yml up
+      #- run:
+      #    name: Run tests
+      #    command: |
+      #      docker-compose -f ./docker-compose.test.yml up
       - deploy:
           name: Push application image
           command: |
             docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
             docker tag app registry.heroku.com/$HEROKU_APP_NAME/web
             docker push registry.heroku.com/$HEROKU_APP_NAME/web
+
+workflows:
+  version: 2
+
+  default:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
