@@ -28,7 +28,8 @@ RUN pip install --no-cache-dir -r $REQUIREMENTS_FILE
 
 COPY . .
 
-# Generate static files
+# Collect/generate static files
+RUN python manage.py collectstatic
 RUN python manage.py compress
 RUN python manage.py loadarticles
 
