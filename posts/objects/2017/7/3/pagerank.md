@@ -4,19 +4,20 @@ title: Towards an Understanding of Search Engines
 
 ## Developing an Intuition
 
-Imagine a robot which starts on some random page on the web.  The robot clicks
-a random link on this page and is led to a second page.  On this second page,
-the robot clicks another random link and is led to a third page and so on.  We
-could imagine that, if this process continued on forever, the robot might
-eventually visit every page on the web.^[Attentive readers may realize that
-this is not entirely true.  For instance, if the robot navigated to a page with
-no links, it would get stuck.  For now, let's assume the robot *will* visit
-every page and that it won't run into anything that would cause it to get stuck
-in a certain pattern.]  During this journey, our robot would probably find
-itself revisiting certain pages again and again.  After all, the web has a lot
-of popular sites that everyone visits and that are linked to from many places.
-Such sites could be ones like *wikipedia.com* or *nytimes.com*.  These are the
-important pages on the web.
+Imagine a robot which starts on some random web page on the internet.  The
+robot clicks a random link on this page and is led to a second page.  On this
+second page, the robot clicks another random link and is led to a third page
+and so on.  We could imagine that, if this process continued on forever, the
+robot might eventually visit every page on the web.^[Attentive readers may
+realize that this is not entirely true.  For instance, if the robot navigated
+to a page with no links, it would get stuck.  For now, let's assume the robot
+*will* visit every page and that it won't run into anything that would cause it
+to get stuck in a certain pattern.]  During this journey, our robot would
+probably find itself revisiting certain pages again and again.  After all, the
+web has a lot of popular sites that everyone visits and that are linked to from
+many places.  Such sites could be ones like *wikipedia.com* or *facebook.com*.
+These sites that our robot finds often are the "important" sites on the
+internet.
 
 This sense of importance that we've just described generally characterizes the
 way that search engines rank and index web pages on the internet.  We can
@@ -31,8 +32,16 @@ describe the process in a few steps:
   pages with higher likelihoods of being visited are considered to be more
   important).
 
-If the web looked like figure 1, could we guess the probability that we would
-find ourselves on page 1 during any step of an infinite walk?
+Let's look at some diagrams to get a better sense of what we're talking about.
+Below, we'll look at some figures that depict "mini" internets that have only a
+few pages.  Pages will be represented by circles with numbers in the center and
+links will be arrows connecting the circles.  For example, an arrow pointing
+from one circle to another will represent a link going from one page to
+another.
+
+Now, imagining our robot and its random browsing again, if the web looked like
+figure 1, could we guess the likelihood that the robot would find itself on
+page 1 at any given time during an infinite walk?
 
 <figure>
   \begin{tikzpicture}[scale=1.5, transform shape]
@@ -53,7 +62,7 @@ find ourselves on page 1 during any step of an infinite walk?
 </figure>
 
 What if we added a link from page 2 back to page 1 as seen in figure 2?  Would
-page 1's probability change?
+page 1's likelihood change?
 
 <figure>
   \begin{tikzpicture}[scale=1.5, transform shape]
@@ -74,10 +83,11 @@ page 1's probability change?
   <figcaption>Figure 2: A web with more links.</figcaption>
 </figure>
 
-Of course, this all sounds a bit crazy.  How could we do an infinite walk of
-the web?  Wouldn't that require an infinite amount of time?  Also, how do we
-handle the case when the robot finds a page with no links to other pages as
-seen with page 1 in figure 3?
+At this point, we have to admit that this all sounds a bit crazy and
+impractical.  How could we do an infinite walk of the web?  Wouldn't that
+require an infinite amount of time?  Also, how do we handle the case when the
+robot finds a page with no links to other pages as seen with page 1 in figure
+3?
 
 <figure>
   \begin{tikzpicture}[scale=1.5, transform shape]
