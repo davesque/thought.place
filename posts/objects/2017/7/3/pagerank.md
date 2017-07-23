@@ -1,5 +1,6 @@
 ---
 title: Towards an Understanding of Search Engines
+published: 2017-07-22T09:00:00-0400
 ---
 
 ## Developing an Intuition
