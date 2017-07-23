@@ -313,7 +313,7 @@ What are we seeing here?  In column 1 of $T$, we see 1 in the second row and
 0's in the other rows.  This means there's a 100% probability of moving to page
 2 from page 1.  Therefore, column 1 corresponds to the probabilities of
 transitioning from page 1 to any other page.  Likewise, column 2 corresponds to
-the transition probabilites for page 2 and so on.
+the transition probabilities for page 2 and so on.
 
 Now, how do we actually *use* this transition matrix which represents our state
 machine?  How do we actually *run* the machine?  The process is detailed below:
