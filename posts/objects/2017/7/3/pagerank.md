@@ -61,8 +61,11 @@ page 1 at any given time during an infinite walk?
   <figcaption>Figure 1: A tiny world-wide web.</figcaption>
 </figure>
 
-What if we added a link from page 2 back to page 1 as seen in figure 2?  Would
-page 1's likelihood change?
+In this case, we would probably say that the likelihood is 1 in 3.  This
+follows from the fact that each page links to the next in a very regular way.
+So it's reasonable to say that each page's likelihood of being encountered is
+the same.  What if we added a link from page 2 back to page 1 as seen in figure
+2?  Would page 1's likelihood change?
 
 <figure>
   \begin{tikzpicture}[scale=1.5, transform shape]
@@ -83,11 +86,13 @@ page 1's likelihood change?
   <figcaption>Figure 2: A web with more links.</figcaption>
 </figure>
 
-At this point, we have to admit that this all sounds a bit crazy and
-impractical.  How could we do an infinite walk of the web?  Wouldn't that
-require an infinite amount of time?  Also, how do we handle the case when the
-robot finds a page with no links to other pages as seen with page 1 in figure
-3?
+Now things seem a bit less intuitive.  Page 1 seems pretty important (since it
+has the highest number of links that point to it), but how can we judge the
+importance of pages 2 and 3?  We also have to admit that the whole notion of an
+"infinite" walk sounds a bit crazy and impractical.  How could we actually *do*
+that?  Wouldn't that require an infinite amount of time?  Furthermore, how do
+we handle the case when our robot finds a page with no links to other pages as
+seen with page 1 in figure 3?
 
 <figure>
   \begin{tikzpicture}[scale=1.5, transform shape]
@@ -104,10 +109,10 @@ robot finds a page with no links to other pages as seen with page 1 in figure
     \draw[edge] (3) to (1);
   \end{tikzpicture}
 
-  <figcaption>Figure 3: A web with a black hole.</figcaption>
+  <figcaption>Figure 3: A web with a "black hole".</figcaption>
 </figure>
 
-What if the robot begins in some part of the web which doesn't refer to any
+What if our robot begins in some part of the web which doesn't refer to any
 pages outside of itself (i.e. the robot gets stuck not just on a certain page
 but in a certain part of the web as seen in figure 4)?
 
@@ -128,11 +133,15 @@ but in a certain part of the web as seen in figure 4)?
     \draw[edge] (4) to[bend left] (3);
   \end{tikzpicture}
 
-  <figcaption>Figure 4: A web with isolated zones.</figcaption>
+  <figcaption>Figure 4: A web with isolated sections.</figcaption>
 </figure>
 
 To answer all these questions, we need to find a more systematic way to talk
-about this problem.
+about this problem^[The algorithm we've described in this first section is, in
+fact, how an early version of Google's very own PageRank algorithm worked.  So,
+at one point in recent history, this algorithm was poised to make billions of
+dollars.  The rest of this article will touch on more of the details of the
+PageRank algorithm.].
 
 ## A More Systematic Approach
 
@@ -142,14 +151,13 @@ First, let's introduce some basic terminology.  During the rest of this
 article, we're going to use two related concepts in our discussion: the
 concepts of a **state machine** and a **graph**.  For our purposes, these two
 terms are equivalent.  A **state machines** is composed of a number of states
-in addition to a number transitions between those states.  Likewise, a
-**graph** is composed of a number of vertices and a number of edges.  We can
-think of the web as both a state machine *and* a graph.  It is a state machine
-in the sense that each page is a possible state and the links between pages are
-the possible transitions between states.  It is also a graph in the sense that
-each page is a vertex and all the links between pages are the edges.  If this
-terminology is confusing, just remember: a page $=$ a state $=$ a vertex *and*
-a link $=$ a transition $=$ an edge.
+in addition to a number transitions between those states.  In our diagrams from
+the first section, the circles were the states and the arrows were the
+transitions.  Likewise, a **graph** is composed of a number of vertices and a
+number of edges.  In the same diagrams, the circles were the vertices and the
+arrows were the edges.  We can think of the web as both a state machine *and* a
+graph.  If this terminology is confusing, just remember: a page $=$ a state $=$
+a vertex *and* a link $=$ a transition $=$ an edge.
 
 Now that we've made this clear, let's think of the web as a state machine.
 Think back to our random walker.  When our walker comes to a new page (when it
@@ -166,7 +174,14 @@ step of our walk:
 
 We're beginning to see that we're not just talking about a state machine, but a
 *probabilistic* one &mdash; that is, a state machine which randomly transitions
-between states based on some set of probabilities for each state.
+between states based on some set of probabilities for each state.  Such an idea
+is also sometimes referred to as a **Markov chain**^[A Markov chain more
+generally describes the idea of a sequence of events which is "memoryless".
+That is, when the likelihood of future events in some process can be determined
+entirely from the current situation or state.  In our case, this term is
+appropriate since our random walker (basically) uses only the links on its
+current page to choose where to go.  We say "basically" here because there are
+a few more details to the situation which we'll get to later.].
 
 Let's visualize this.  We imagine that our walker has come to page 1 and is now
 picking which page to go to from there.  It gives each link on page 1 an equal
@@ -192,10 +207,10 @@ probability of being clicked as seen in figure 5:
 
 The total number of links on page 1 is 3 so the probability of clicking any one
 of those links is $1/3$.  To illustrate this idea further, let's annotate
-figure 2 with some probabilities.  In figure 6, we see from these annotations
-that each link from page 2 has probability $1/2$ of being clicked.  The link
-from page 1 has probability 1 (a 100% chance) of being clicked as does the link
-from page 3:
+figure 2 from the first section with some probabilities.  In figure 6, we see
+this annotated version of figure 2 where each link from page 2 has probability
+$1/2$ of being clicked.  The link from page 1 has probability 1 (a 100% chance)
+of being clicked as does the link from page 3:
 
 <figure>
   \begin{tikzpicture}[->,>=latex',scale=1.5,transform shape]
@@ -242,7 +257,9 @@ A_{ij} = \begin{cases}
 \end{cases}
 \end{equation*}
 
-This gives us the following adjacency matrix for the graph seen in figure 6:
+As we can see in the definition above, an adjacency matrix encodes the edges in
+a graph as well as each edge's direction.  This gives us the following
+adjacency matrix for the graph seen in figure 6:
 
 \begin{equation*}
 A = \begin{bmatrix}
@@ -261,7 +278,8 @@ D_{ij} = \begin{cases}
 \end{cases}
 \end{equation*}
 
-For our graph, that looks like this:
+A degree matrix encodes the number of edges pointing away from each vertex in a
+graph.  For our graph, that looks like this:
 
 \begin{equation*}
 D = \M{%
@@ -297,8 +315,9 @@ What are we seeing here?  In column 1 of $T$, we see 1 in the second row and
 transitioning from page 1 to any other page.  Likewise, column 2 corresponds to
 the transition probabilites for page 2 and so on.
 
-Great!  Now, how do we actually *use* the state machine?  How do we actually
-*run* it?  The process is detailed below:
+Great!  Now, how do we actually *use* this transition matrix which represents
+our state machine?  How do we actually *run* the machine?  The process is
+detailed below:
 
 \begin{align}
   \text{next state} &= T \times \text{previous or initial state} \label{eq:transition-informal} \\
@@ -314,7 +333,7 @@ Great!  Now, how do we actually *use* the state machine?  How do we actually
 In equations 1 and 2 above, the transition matrix $T$ multiplies with some
 state vector to perform the action of transitioning to the next state.
 Concretely, in equation 4, we begin our random walker on page 1 (state 1) by
-choosing an initial state vector with 1 in its first slot as seen on the
+choosing an initial state vector with 1 as its first element as seen on the
 right-hand side.  After the matrix-vector multiplication, we see that the 1 has
 moved into the second slot on the left-side.  This means that our walker ended
 up on page 2 after one "random" step.^[In this case, it was not exactly random
@@ -479,10 +498,11 @@ quite.  As mentioned before, what if the walker hits a page with no links?
   } \M{1 \\ 0 \\ 0}
 \end{align*}
 
-Right away, we hit a null state.  Any further state transitions will also
-result in the null state.  So how do we fix this?  One approach, which will be
-our approach, is to simply set every value in the "page 1 column" to $1/n$
-where $n$ is the total number of pages in our graph.
+Right away, we hit a null state (i.e. a state vector whose elements are all
+zero).  Any further state transitions will also lead to this null state.  So
+how do we fix this?  One approach, which we'll use, is to simply set every
+value in the "page 1 column" to $1/n$ where $n$ is the total number of pages in
+our graph.
 
 \begin{align*}
   \M{%
@@ -500,14 +520,25 @@ where $n$ is the total number of pages in our graph.
   }
 \end{align*}
 
-This makes a bit of intuitive sense.  If we imagine a person browsing the web
+This makes some intuitive sense.  If we imagine a person browsing the web
 coming to a page with no links, would we say that they're stuck on that page?
-No.  They probably just think of some other page to go to.
+No.  They probably just think of some other page to go to.  We might say that
+this idea is represented in the act of changing any zero columns to sets of
+equal probabilities.
 
-### Dangling Zones
+### Dangling Sets of Vertices and Circular Linking
 
 What if our walker wanders into some corner of the internet that doesn't
-reference anything outside of itself?
+reference anything outside of itself?  Maybe such an area could be an online
+manual that only links to other sections in the same manual.  The walker would
+get stuck there, endlessly flipping between manual pages.  Also, what if the
+walker happens upon a set of pages that link to each other in a perfectly
+circular fashion as seen in figure 1 from the first section?  This would
+present a mathematical problem.  If our initial state vector began on one of
+those pages, the 1 element would just move between positions and the vector
+would never stabilize.  Both of these problems are seen with the mini web in
+figure 4.  We give the transition matrix for this web below multiplied a few
+times with a possible state vector:
 
 \begin{align*}
   \M{0 \\ 1 \\ 0 \\ 0} &= \M{%
@@ -537,16 +568,16 @@ reference anything outside of itself?
   \vdots
 \end{align*}
 
-We can see the state vectors alternating and never stabilizing.  Also, the
-slots in the state vector which correspond to pages 3 and 4 are zero.  However,
-this doesn't reflect the fact that those pages are linked to from somewhere and
+We can see the state vector alternating and never stabilizing.  Also, the slots
+in the state vector which correspond to pages 3 and 4 are zero.  However, this
+doesn't reflect the fact that those pages are linked to from somewhere and
 should have a rank greater than zero.  How do we fix this?
 
-Let's consult our intuition again.  What would a person do if they found
-themselves roaming around in a cyclic part of the web?  They would probably
-just choose some other page to visit.  In fact, there's probably always a small
-chance that a person will suddenly get bored, decide to stop clicking links,
-and simply navigate to a random page they think of off the top of their head.
+Let's ask our intuition again.  What would a person do if they found themselves
+roaming around in a cyclic part of the web?  They would probably just choose
+some other page to visit.  In fact, there's probably always a small chance they
+will suddenly get bored, decide to stop clicking links, and simply navigate to
+a random page they think of off the top of their head.
 
 We can represent this idea mathematically:
 
@@ -554,14 +585,24 @@ We can represent this idea mathematically:
   G &= (1 - p) T + \frac{p}{n} \mathds{1} \mathds{1}^T
 \end{align*}
 
-This gives us a transition matrix $G$ which has, in effect, been slightly
-redistributed according to a tuning probability $p$.  The tuning probability
-$p$ represents the likelihood that our random walker will decide to suddenly
-jump to any other page on the web without following any links on its current
-page.
+What do we have here?  We have an outer product of $\mathbb{1}$ vectors which will
+become an $n \times n$ matrix of ones ($n$ being the number of pages in our
+internet).  This matrix of ones is multiplied by a scalar $p/n$.  We've already
+defined $n$.  We say that the value $p$ is a "tuning" probability that
+indicates how likely our walker is during any given step to randomly jump to
+any page in our internet.  By multiplying $p/n$ with a matrix of all ones, we
+get a tuning matrix with our tuning probability $p$ evenly divided across all
+elements.  We also multiply our original transition matrix $T$ by the
+probabilistic complement of $p$ (which is $1 - p$) and sum it with the tuning
+matrix.
 
-Let's calculate a transition matrix $G$ using the $4 \times 4$ transition
-matrix above and a tuning probability of $1/100$:
+This gives us a matrix $G$ which is a new version of $T$ which has been
+slightly redistributed according to our tuning probability.  Now, during any
+step of our walk, the walker might jump to any other page, but it is most
+likely to follow the links present on each page.
+
+Let's calculate $G$ using the $4 \times 4$ transition matrix above (with the
+cyclic behavior) and a tuning probability of $1/100$:
 
 \begin{align*}
   G &= (1 - p) T + \frac{p}{n} \mathds{1} \mathds{1}^T \\
@@ -624,14 +665,18 @@ matrix $A$ if the following equation holds true:
   A \B x &= \lambda \B x && \text{where $\lambda$ is some constant value}
 \end{align*}
 
-This says that, after transforming the vector $\mathbf{x}$ using $A$, the result
-is simply a scalar multiple of $\mathbf{x}$.  That multiple, $\lambda$, is the
-**eigenvalue** which corresponds to the eigenvector $\mathbf{x}$.
+This says that, after transforming the vector $\mathbf{x}$ using the matrix
+$A$, the result is simply a scalar multiple of $\mathbf{x}$.  That multiple,
+$\lambda$, is the **eigenvalue** which corresponds to the eigenvector
+$\mathbf{x}$.  These complementary ideas of eigenvectors and eigenvalues are
+central to the topic of linear algebra.  Together, they succinctly characterize
+the actions performed by a matrix against a vector.
 
-Does this remind us of anything?  What if the matrix $A$ was replaced with one
-of our transition matrices $T$?  Also, what if the vector $\mathbf{x}$ was
-replaced with one of our stable state vectors?  Would the above equation still
-hold true?  Let's see:
+Let's now consider if these ideas remind us of anything we've seen in our
+discussion so far.  What if the matrix $A$ was replaced with one of our
+transition matrices $T$?  Also, what if the vector $\mathbf{x}$ was replaced
+with one of our stable state vectors?  Would the above equation still hold
+true?  Let's see:
 
 \begin{align*}
   T \B s &= \M{%
@@ -646,9 +691,9 @@ hold true?  Let's see:
 We can see that our state vector $\mathbf{s}$ is indeed an eigenvector of $T$
 with an eigenvalue of $1$.
 
-We can now define the problem of finding the rank vector concisely in terms of
-linear algebra.  We say that the rank vector of the web is the eigenvector of
-the web's transition matrix with eigenvalue 1.^[Actually, it is this eigenvector
-scaled by the inverse of the sum of its terms.  This scaling would guarantee
-that the vector represents a probability distribution and that its terms sum to
-1.]
+We can now define the problem of finding the rank vector of pages on the
+internet concisely in terms of linear algebra.  We say that the rank vector of
+the web is the eigenvector of the web's transition matrix with eigenvalue
+1.^[Actually, it is this eigenvector scaled by the inverse of the sum of its
+terms.  This scaling would guarantee that the vector represents a probability
+distribution and that its terms sum to 1.]
