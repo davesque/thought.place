@@ -33,8 +33,8 @@ describe the process in a few steps:
   important).
 
 Let's look at some diagrams to get a better sense of what we're talking about.
-Below, we'll look at some figures that depict "mini" internets that have only a
-few pages.  Pages will be represented by circles with numbers in the center and
+Below, we'll consider a collection of "mini" internets that have only a few
+pages.  Pages will be represented by circles with numbers in the center and
 links will be arrows connecting the circles.  For example, an arrow pointing
 from one circle to another will represent a link going from one page to
 another.
@@ -156,13 +156,12 @@ the first section, the circles were the states and the arrows were the
 transitions.  Likewise, a **graph** is composed of a number of vertices and a
 number of edges.  In the same diagrams, the circles were the vertices and the
 arrows were the edges.  We can think of the web as both a state machine *and* a
-graph.  If this terminology is confusing, just remember: a page $=$ a state $=$
-a vertex *and* a link $=$ a transition $=$ an edge.
+graph.
 
-Now that we've made this clear, let's think of the web as a state machine.
-Think back to our random walker.  When our walker comes to a new page (when it
-transitions into a new state), it has to randomly choose which link to click
-(choose the next state into which it should transition).
+Now that we've hopefully clarified some things, let's think of the web as a
+state machine.  Think back to our random walker.  When our walker comes to a
+new page (when it transitions into a new state), it has to randomly choose
+which link to click (choose the next state into which it should transition).
 
 Let's say that each link has an equal probability of being clicked.  This gives
 us the following equation for the probability of clicking a link during any
@@ -176,12 +175,12 @@ We're beginning to see that we're not just talking about a state machine, but a
 *probabilistic* one &mdash; that is, a state machine which randomly transitions
 between states based on some set of probabilities for each state.  Such an idea
 is also sometimes referred to as a **Markov chain**^[A Markov chain more
-generally describes the idea of a sequence of events which is "memoryless".
-That is, when the likelihood of future events in some process can be determined
-entirely from the current situation or state.  In our case, this term is
-appropriate since our random walker (basically) uses only the links on its
-current page to choose where to go.  We say "basically" here because there are
-a few more details to the situation which we'll get to later.].
+generally describes the idea of a sequence of events which is "memoryless"
+&mdash; that is, when the likelihood of future events in some process can be
+determined entirely from the current situation or state.  In our case, this
+term is appropriate since our random walker basically uses only the links on
+its current page to choose where to go.  We say "basically" here because there
+are a few more details to the situation which we'll get to later.].
 
 Let's visualize this.  We imagine that our walker has come to page 1 and is now
 picking which page to go to from there.  It gives each link on page 1 an equal
@@ -315,19 +314,18 @@ What are we seeing here?  In column 1 of $T$, we see 1 in the second row and
 transitioning from page 1 to any other page.  Likewise, column 2 corresponds to
 the transition probabilites for page 2 and so on.
 
-Great!  Now, how do we actually *use* this transition matrix which represents
-our state machine?  How do we actually *run* the machine?  The process is
-detailed below:
+Now, how do we actually *use* this transition matrix which represents our state
+machine?  How do we actually *run* the machine?  The process is detailed below:
 
 \begin{align}
-  \text{next state} &= T \times \text{previous or initial state} \label{eq:transition-informal} \\
-  \B{s}_n &= T \B{s}_{n - 1} \label{eq:transition-formal} \\
+  \text{next state vector} &= T \times \text{previous or initial state vector} \\
+  \B{s}_n &= T \B{s}_{n - 1} \\
   \B{s}_1 &= T \B{s}_0 \\
   \implies \M{0 \\ 1 \\ 0} &= \M{%
     0 & \sfrac{1}{2} & 1 \\
     1 & 0 & 0 \\
     0 & \sfrac{1}{2} & 0
-  } \M{1 \\ 0 \\ 0} \label{eq:transition-actual}
+  } \M{1 \\ 0 \\ 0}
 \end{align}
 
 In equations 1 and 2 above, the transition matrix $T$ multiplies with some
@@ -477,11 +475,11 @@ $\mathbf{s}_6$, we can see that our vectors were already beginning to approach
 this stable state.  So what does this mean?
 
 Well, we've actually ended up with a vector which "ranks" the pages in our
-miniature web.  The first element in the vector is $0.4$ which means that,
-during an infinite walk, we have a 4 in 10 chance of landing on page 1 after
-each step.  The second element is $0.4$ which means that the same is true for
-page 2.  Page 3 only has a 2 in 10 chance of being encountered during each step
-of the walk.
+miniature web (i.e. a [PageRank](https://en.wikipedia.org/wiki/PageRank)
+vector).  The first element in the vector is $0.4$ which means that, during an
+infinite walk, we have a 4 in 10 chance of landing on page 1 after each step.
+The second element is $0.4$ which means that the same is true for page 2.  Page
+3 only has a 2 in 10 chance of being encountered during each step of the walk.
 
 ## Edge Cases
 
@@ -598,7 +596,7 @@ matrix.
 
 This gives us a matrix $G$ which is a new version of $T$ which has been
 slightly redistributed according to our tuning probability.  Now, during any
-step of our walk, the walker might jump to any other page, but it is most
+step of our walk, the walker might jump to any other page, but it is more
 likely to follow the links present on each page.
 
 Let's calculate $G$ using the $4 \times 4$ transition matrix above (with the
@@ -670,7 +668,7 @@ $A$, the result is simply a scalar multiple of $\mathbf{x}$.  That multiple,
 $\lambda$, is the **eigenvalue** which corresponds to the eigenvector
 $\mathbf{x}$.  These complementary ideas of eigenvectors and eigenvalues are
 central to the topic of linear algebra.  Together, they succinctly characterize
-the actions performed by a matrix against a vector.
+the actions performed by a matrix when it is multiplied with a vector.
 
 Let's now consider if these ideas remind us of anything we've seen in our
 discussion so far.  What if the matrix $A$ was replaced with one of our
