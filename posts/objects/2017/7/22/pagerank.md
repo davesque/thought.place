@@ -591,14 +591,14 @@ defined $n$.  We say that the value $p$ is a "tuning" probability that
 indicates how likely our walker is during any given step to randomly jump to
 any page in our internet.  By multiplying $p/n$ with a matrix of all ones, we
 get a tuning matrix with our tuning probability $p$ evenly divided across all
-elements.  We also multiply our original transition matrix $T$ by the
-probabilistic complement of $p$ (which is $1 - p$) and sum it with the tuning
-matrix.
+elements in each column.  We also multiply our original transition matrix $T$
+by the probabilistic complement of $p$ (which is $1 - p$) and sum it with the
+tuning matrix.
 
-This gives us a matrix $G$ which is a new version of $T$ which has been
-slightly redistributed according to our tuning probability.  Now, during any
-step of our walk, the walker might jump to any other page, but it is more
-likely to follow the links present on each page.
+This gives us a matrix $G$ which is a new version of $T$ that has been slightly
+redistributed according to our tuning probability.  Now, during any step of our
+walk, the walker might jump to any other page, but it is more likely to follow
+the links present on each page.
 
 Let's calculate $G$ using the $4 \times 4$ transition matrix above (with the
 cyclic behavior) and a tuning probability of $1/100$:
