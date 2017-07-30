@@ -138,11 +138,11 @@ but in a certain part of the web as seen in figure 4)?
 </figure>
 
 To answer all these questions, we need to find a more systematic way to talk
-about this problem^[The algorithm we've described in this first section is, in
+about this problem.^[The algorithm we've described in this first section is, in
 fact, how an early version of Google's very own PageRank algorithm worked.  So,
 at one point in recent history, this algorithm was poised to make billions of
 dollars.  The rest of this article will touch on more of the details of the
-PageRank algorithm.].
+PageRank algorithm.]
 
 ## A More Systematic Approach
 
@@ -175,13 +175,13 @@ step of our walk:
 We're beginning to see that we're not just talking about a state machine, but a
 *probabilistic* one &mdash; that is, a state machine which randomly transitions
 between states based on some set of probabilities for each state.  Such an idea
-is also sometimes referred to as a **Markov chain**^[A Markov chain more
+is also sometimes referred to as a **Markov chain**.^[A Markov chain more
 generally describes the idea of a sequence of events which is "memoryless"
 &mdash; that is, when the likelihood of future events in some process can be
 determined entirely from the current situation or state.  In our case, this
 term is appropriate since our random walker basically uses only the links on
 its current page to choose where to go.  We say "basically" here because there
-are a few more details to the situation which we'll get to later.].
+are a few more details to the situation which we'll get to later.]
 
 Let's visualize this.  We imagine that our walker has come to page 1 and is now
 picking which page to go to from there.  It gives each link on page 1 an equal
