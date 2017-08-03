@@ -289,7 +289,7 @@ D = \M{%
 }
 \end{equation*}
 
-After all this, we can finally define our transition matrix as follows:
+Using all this, we can define our transition matrix:
 
 \begin{align*}
   T &= A^T D^{-1} \\
@@ -316,7 +316,8 @@ transitioning from page 1 to any other page.  Likewise, column 2 corresponds to
 the transition probabilities for page 2 and so on.
 
 Now, how do we actually *use* this transition matrix which represents our state
-machine?  How do we actually *run* the machine?  The process is detailed below:
+machine?  How do we actually *run* the machine?  The process occurs through
+repeated matrix-vector multiplications as detailed below:
 
 \begin{align}
   \text{next state vector} &= T \times \text{previous or initial state vector} \\
@@ -334,7 +335,7 @@ state vector to perform the action of transitioning to the next state.
 Concretely, in equation 4, we begin our random walker on page 1 (state 1) by
 choosing an initial state vector with 1 as its first element as seen on the
 right-hand side.  After the matrix-vector multiplication, we see that the 1 has
-moved into the second slot on the left-side.  This means that our walker ended
+become the second element on the left-side.  This means that our walker ended
 up on page 2 after one "random" step.^[In this case, it was not exactly random
 since page 1 links to page 2 and nothing else.]  Let's see what happens if we
 continue this process.  We now have a new state vector $\mathbf{s}_1$.  We feed
@@ -567,10 +568,10 @@ times with a possible state vector:
   \vdots
 \end{align*}
 
-We can see the state vector alternating and never stabilizing.  Also, the slots
-in the state vector which correspond to pages 3 and 4 are zero.  However, this
-doesn't reflect the fact that those pages are linked to from somewhere and
-should have a rank greater than zero.  How do we fix this?
+We can see the state vector alternating and never stabilizing.  Also, the
+elements in the state vector which correspond to pages 3 and 4 are zero.
+However, this doesn't reflect the fact that those pages are linked to from
+somewhere and should have a rank greater than zero.  How do we fix this?
 
 Let's ask our intuition again.  What would a person do if they found themselves
 roaming around in a cyclic part of the web?  They would probably just choose
