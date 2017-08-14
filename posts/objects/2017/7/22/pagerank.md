@@ -151,8 +151,8 @@ PageRank algorithm.]
 First, let's introduce some basic terminology.  During the rest of this
 article, we're going to use two related concepts in our discussion: the
 concepts of a **state machine** and a **graph**.  For our purposes, these two
-terms are equivalent.  A **state machines** is composed of a number of states
-in addition to a number transitions between those states.  In our diagrams from
+terms are equivalent.  A **state machine** is composed of a number of states in
+addition to a number transitions between those states.  In our diagrams from
 the first section, the circles were the states and the arrows were the
 transitions.  Likewise, a **graph** is composed of a number of vertices and a
 number of edges.  In the same diagrams, the circles were the vertices and the
@@ -335,12 +335,12 @@ state vector to perform the action of transitioning to the next state.
 Concretely, in equation 4, we begin our random walker on page 1 (state 1) by
 choosing an initial state vector with 1 as its first element as seen on the
 right-hand side.  After the matrix-vector multiplication, we see that the 1 has
-become the second element on the left-side.  This means that our walker ended
-up on page 2 after one "random" step.^[In this case, it was not exactly random
-since page 1 links to page 2 and nothing else.]  Let's see what happens if we
-continue this process.  We now have a new state vector $\mathbf{s}_1$.  We feed
-$\mathbf{s}_1$ back into the transition equation to get the next state vector
-$\mathbf{s}_2$:
+become the second element on the left-hand side.  This means that our walker
+ended up on page 2 after one "random" step.^[In this case, it was not exactly
+random since page 1 links to page 2 and nothing else.]  Let's see what happens
+if we continue this process.  We now have a new state vector $\mathbf{s}_1$.
+We multiply $\mathbf{s}_1$ with the transition matrix to get the next state
+vector $\mathbf{s}_2$:
 
 \begin{align*}
   \B{s}_2 &= T \B{s}_1 \\
