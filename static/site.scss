@@ -81,9 +81,9 @@ $navbar-nav-item-hover-color: $global-color;
 $navbar-nav-item-onclick-color: $global-emphasis-color;
 $navbar-nav-item-active-color: $global-emphasis-color;
 
-$nav-primary-item-color: fg-mix($global-secondary-background, 50%);
-$nav-primary-item-hover-color: $global-color;
-$nav-primary-item-active-color: $global-emphasis-color;
+$inverse-nav-primary-item-color: fg-mix($global-secondary-background, 50%);
+$inverse-nav-primary-item-hover-color: $global-color;
+$inverse-nav-primary-item-active-color: $global-emphasis-color;
 
 $container-small-max-width: 700px;
 $container-xsmall-max-width: 600px;
