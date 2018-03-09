@@ -1,18 +1,7 @@
 FROM python:3.6-slim-stretch
 
-# Install latex packages
-RUN apt-get update \
-  && apt-get install -y \
-    pdf2svg \
-    texlive \
-    texlive-latex-extra \
-    texlive-fonts-extra \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
-
 # Install pandoc
 ARG PANDOC_URL=https://github.com/jgm/pandoc/releases/download/2.0.5/pandoc-2.0.5-1-amd64.deb
-
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         curl \
@@ -42,9 +31,18 @@ RUN apt-get update \
 
 COPY . .
 
-# Collect/generate static files
 RUN python manage.py collectstatic
 RUN python manage.py compress
+
+# Generate latex static files
+RUN apt-get update \
+  && apt-get install -y \
+    pdf2svg \
+    texlive \
+    texlive-latex-extra \
+    texlive-fonts-extra \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 RUN python manage.py loadarticles
 
 # Heroku containers are not run with root privileges.  We add and enforce a
