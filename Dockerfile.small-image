@@ -31,7 +31,7 @@ RUN apt-get update \
 
 COPY . .
 
-# Generate django compressor static files
+RUN python manage.py collectstatic
 RUN python manage.py compress
 
 # Generate latex static files
