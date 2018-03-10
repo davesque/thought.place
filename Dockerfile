@@ -38,17 +38,46 @@ RUN python manage.py compress
 RUN apt-get update \
   && apt-get install -y \
     pdf2svg \
-    texlive \
-    texlive-latex-extra \
-    texlive-fonts-extra \
+    wget \
+    xzdec \
+    perl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
+
+ARG TEXLIVE_URL=http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        curl \
+    && curl -L -o /tmp/install-tl-unx.tar.gz $TEXLIVE_URL \
+    && cd /tmp \
+    && tar zxvf install-tl-unx.tar.gz \
+    && cd install-tl* \
+    && ./install-tl -profile /usr/src/app/texlive.profile \
+    && cd / \
+    && rm -rf /tmp/install-tl* \
+    && apt-get purge --auto-remove -y \
+        curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install required latex packages for both root and localuser
+ENV PATH="/usr/local/texlive/2017/bin/x86_64-linux:$PATH"
+RUN tlmgr install \
+  anyfontsize \
+  doublestroke \
+  preview \
+  standalone \
+  pgf \
+  xcolor \
+  mathtools \
+  xkeyval
+COPY ./pdfcrop /usr/local/bin/
 RUN python manage.py loadarticles
 
 # Heroku containers are not run with root privileges.  We add and enforce a
 # non-root user here to ensure that our site works under these conditions.  The
 # actual runtime user chosen by Heroku will vary.  See here:
-# https://devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime
+# https:p/devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime
 RUN useradd -m localuser
 USER localuser
 
