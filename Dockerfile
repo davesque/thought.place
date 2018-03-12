@@ -13,6 +13,15 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update \
+  && apt-get install -y \
+    pdf2svg \
+    texlive \
+    texlive-latex-extra \
+    texlive-fonts-extra \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /usr/src/app
 
 COPY requirements ./requirements
@@ -33,16 +42,6 @@ COPY . .
 
 RUN python manage.py collectstatic
 RUN python manage.py compress
-
-# Generate latex static files
-RUN apt-get update \
-  && apt-get install -y \
-    pdf2svg \
-    texlive \
-    texlive-latex-extra \
-    texlive-fonts-extra \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
 RUN python manage.py loadarticles
 
 # Heroku containers are not run with root privileges.  We add and enforce a
