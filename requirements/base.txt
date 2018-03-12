@@ -2,7 +2,7 @@ Django>=1.11,<1.12
 gunicorn
 django-dotenv
 dj-database-url
-psycopg2
+psycopg2-binary
 raven
 whitenoise
 ipython
