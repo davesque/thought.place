@@ -23,5 +23,9 @@ urlpatterns = [
     url(r'', include('posts.urls')),
 
     url(r'^$', TemplateView.as_view(template_name='about.html'), name='about'),
+    url(r'^keybase\.txt$', TemplateView.as_view(
+        template_name='keybase.txt',
+        content_type='text/plain',
+    ), name='keybase'),
     url(r'^projects/$', TemplateView.as_view(template_name='projects.html'), name='projects'),
 ]
