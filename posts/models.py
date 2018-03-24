@@ -33,7 +33,7 @@ class Post(object):
         # Load data from frontmatter yaml
         frontmatter = load(parts[0], Loader=Loader)
 
-        self.title = frontmatter['title']
+        self.title = convert_with_tex(frontmatter['title'])
 
         published = frontmatter.get('published')
         self.published = parse(published) if published else None

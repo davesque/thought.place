@@ -4,7 +4,7 @@
 {% block content %}
 {% cache ONE_YEAR_TIMEOUT obj view.request.path %}
 <article class="uk-article uk-text-justify uk-margin-remove-bottom">
-  <h1 class="uk-heading-primary uk-margin-small-bottom">{{ obj.title }}</h1>
+  <h1 class="uk-heading-primary uk-margin-small-bottom">{{ obj.title|safe }}</h1>
   <div class="uk-text-center uk-margin-sm-med-bottom">
     David Sanders{% if obj.published %} &mdash; {{ obj.published|date:'Y/n/j' }}{% endif %}
   </div>

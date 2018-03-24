@@ -4,7 +4,7 @@
 {% for obj in objects %}
 <section class="{% if not forloop.last %}uk-margin-medium-bottom{% endif %}">
   <hgroup>
-    <h2 class="uk-margin-small-bottom"><a class="uk-link-text" href="{{ obj.url }}">{{ obj.title }}</a></h2>
+    <h2 class="uk-margin-small-bottom"><a class="uk-link-text" href="{{ obj.url }}">{{ obj.title|safe }}</a></h2>
     <div class="uk-margin-small-top">{{ obj.published|date:'Y/n/j' }}</div>
   </hgroup>
 
