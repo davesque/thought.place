@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load thoughtplace_tags %}
 
 {% block article-content %}
 {% for obj in objects %}
@@ -8,7 +9,7 @@
     <div class="uk-margin-small-top">{{ obj.published|date:'Y/n/j' }}</div>
   </hgroup>
 
-  <p>{{ obj.body|truncatewords_html:30|striptags }}</p>
+  <p>{{ obj.body|remove_tags:"h1 h2 h3 h4"|truncatewords_html:30|striptags }}</p>
 </section>
 {% endfor %}
 {% endblock %}
